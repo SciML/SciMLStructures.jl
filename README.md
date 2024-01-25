@@ -19,6 +19,7 @@ which allows for solvers to be able to handle custom user types in an efficient 
 
 ```julia
 isscimlstructure(p)::Bool
+ismutablescimlstructure(p)::Bool
 ```
 
 Returns whether the object satisfies the SciMLStructure interface. Defaults to `false` and types
@@ -28,12 +29,14 @@ are required to opt-into the interface.
 
 ```julia
 canonicalize(::AbstractPortion, p::T1) -> values::T2, repack, aliases::Bool
-repack(new_values::T2) -> p::T2 # with values replaced with new_values
+repack(new_values::T2) -> p::T1 # with values replaced with new_values
+replace(::AbstractPortion, p::T1, new_values) -> p::T1
+replace!(p::T1)::Nothing # Requires mutable
 ```
 
 ### Portion Defintions
 
-The core function of the interface is the `canonicalize` function. `caonicalize` allows the user to define
+The core function of the interface is the `canonicalize` function. `canonicalize` allows the user to define
 to the solver how to represent the given "portion" in a standard `AbstractVector` type which allows for
 interfacing with standard tools like linear algebra in an efficient manner. The type of portions which
 are defined are:
