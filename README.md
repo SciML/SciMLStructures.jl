@@ -27,7 +27,7 @@ are required to opt-into the interface.
 ### `canonicalize` Definition
 
 ```julia
-cononicalize(::AbstractPortion, p::T1) -> values::T2, repack, aliases::Bool
+canonicalize(::AbstractPortion, p::T1) -> values::T2, repack, aliases::Bool
 repack(new_values::T2) -> p::T2 # with values replaced with new_values
 ```
 
