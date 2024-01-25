@@ -15,11 +15,20 @@ which allows for solvers to be able to handle custom user types in an efficient 
 
 ## Core Interface Definitions
 
+### `isscimlstructure` Definition
+
+```julia
+isscimlstructure(p)::Bool
+```
+
+Returns whether the object satisfies the SciMLStructure interface. Defaults to `false` and types
+are required to opt-into the interface.
+
 ### `canonicalize` Definition
 
 ```julia
-cononicalize(::AbstractPortion, p) -> values::AbstractArray, repack, aliases::Bool
-repack(::AbstractArray) -> (Float64[], Int[], Vector{Float64}[])
+cononicalize(::AbstractPortion, p::T1) -> values::T2, repack, aliases::Bool
+repack(new_values::T2) -> p::T2 # with values replaced with new_values
 ```
 
 ### Portion Defintions
@@ -32,6 +41,7 @@ are defined are:
 * Tunable: the tunable values/parameters, i.e. the values of the structure which are supposed to be considered
   non-constant when used in the context of an inverse problem solve. For example, this is the set of
   parameters to be optimized during a parameter estimation of an ODE.
+    * Tunable parameters are expected to return an `AbstractVector` of unitless values.
 * Constants: the values which are to be considered constant by the solver, i.e. values which are not estimated
   in an inverse problem and which are unchanged in any operation by the user as part of the solver's usage.
 * Caches: the stored cache values of the struct, i.e. the values of the structure which are used as intermediates
@@ -39,7 +49,9 @@ are defined are:
 * Discrete: the discrete portions of the state captured inside of the structure. For example, discrete values
   stored outside of the `u` in the parameters to be modified in the callbacks of an ODE.
 
-## Core Assumptions of the Interface
+## Definitions for Base Objects
 
-* `canonicalize` returns an `AbstractVector`
-* `canonicalize` returns the unitless values
+* `Vector`: returns an aliased version of itself as `Tunable`, and an empty vector matching type for `Constants`,
+  `Caches`, and `Discrete`.
+* `Array`: returns the `vec(p)` aliased version of itself as `Tunable`, and an empty vector matching type for `Constants`,
+  `Caches`, and `Discrete`.
