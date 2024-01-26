@@ -1,38 +1,17 @@
-# FunctionProperties.jl: Compiler-Based Proofs of Function Properties
+# SciMLStructures.jl: Compiler-Based Proofs of Function Properties
 
-FunctionProperties.jl is a package which contains utilities for testing the
-properties of Julia functions. For example, do you need to know if `f` has
-internal branches (if statements) in order to know if a given AD optimization
-or symbolic pass is valid? This package's functions allows you to perform
-such analyses on functions from a user's code by doing a compiler-based
-code inspection.
+SciMLStructures.jl defines a generic interface for interacting with solvers, estimation tooling, and more within
+the SciML ecosystem and the greater Julia universe. SciMLStructures.jl defines a structured enforcable interface
+which allows for solvers to be able to handle custom user types in an efficient and generalized way.
 
 ## Installation
 
-To install FunctionProperties.jl, use the Julia package manager:
+To install SciMLStructures.jl, use the Julia package manager:
 
 ```julia
 using Pkg
-Pkg.add("FunctionProperties")
+Pkg.add("SciMLStructures")
 ```
-
-## Example
-
-```julia
-@test hasbranching(1, 2) do x, y
-    (x < 0 ? -x : x) + exp(y)
-end # true
-
-@test hasbranching(1, 2) do x, y
-    ifelse(x < 0, -x, x) + exp(y)
-end # false
-```
-
-## This package uses Cassette internally?
-
-Yes, because this is how it's currently known how to be done. If you have an alternative
-implementation which uses the undocumented compiler plugins interface, we would happily
-accept the PR!
 
 ## Contributing
 
@@ -42,7 +21,7 @@ accept the PR!
 
   - See the [SciML Style Guide](https://github.com/SciML/SciMLStyle) for common coding practices and other style decisions.
   - There are a few community forums:
-    
+
       + The #diffeq-bridged and #sciml-bridged channels in the
         [Julia Slack](https://julialang.org/slack/)
       + The #diffeq-bridged and #sciml-bridged channels in the
@@ -92,7 +71,7 @@ Pkg.status(; mode = PKGMODE_MANIFEST) # hide
 ```
 
 ```@raw html
-You can also download the 
+You can also download the
 <a href="
 ```
 
