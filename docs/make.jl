@@ -5,6 +5,7 @@ cp("./docs/Project.toml", "./docs/src/assets/Project.toml", force = true)
 
 pages = [
     "Home" => "index.md",
+    "interface.md",
     "api.md",
 ]
 
@@ -18,6 +19,6 @@ makedocs(modules = [SciMLStructures],
     warnonly = [:missing_docs],
     format = Documenter.HTML(assets = ["assets/favicon.ico"],
         canonical = "https://docs.sciml.ai/SciMLStructures/stable/"),
-    pages = ["index.md"])
+    pages = pages)
 
 deploydocs(repo = "github.com/SciML/SciMLStructures.jl"; push_preview = true)
