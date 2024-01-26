@@ -31,7 +31,7 @@ are required to opt-into the interface.
 canonicalize(::AbstractPortion, p::T1) -> values::T2, repack, aliases::Bool
 repack(new_values::T2) -> p::T1 # with values replaced with new_values
 replace(::AbstractPortion, p::T1, new_values) -> p::T1
-replace!(p::T1)::Nothing # Requires mutable
+replace!(::AbstractPortion, p::T1)::Nothing # Requires mutable
 ```
 
 ### Portion Defintions
