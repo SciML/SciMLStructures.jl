@@ -1,5 +1,5 @@
 # API
 
-```@docs
-hasbranching
+```@autodocs
+Modules = [SciMLStructures]
 ```
