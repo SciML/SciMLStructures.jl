@@ -1,7 +1,6 @@
 [deps]
-MultiScaleArrays = "f9640e96-87f6-5992-9c3b-0743c6a49ffa"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+SciMLStructures = "53ae85a6-f571-4167-b2af-e1d143709226"
 
 [compat]
-Documenter = "0.27"        
-MultiScaleArrays = "1.10"
+Documenter = "1"

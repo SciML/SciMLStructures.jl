@@ -1,29 +1,24 @@
-using Documenter, MultiScaleArrays
+using Documenter, SciMLStructures
 
 cp("./docs/Manifest.toml", "./docs/src/assets/Manifest.toml", force = true)
 cp("./docs/Project.toml", "./docs/src/assets/Project.toml", force = true)
 
 pages = [
     "Home" => "index.md",
+    "interface.md",
     "api.md",
 ]
 
-makedocs(sitename = "FunctionProperties.jl",
-         authors = "Chris Rackauckas",
-         modules = [FunctionProperties],
-         clean = true, doctest = false, linkcheck = true,
-         strict = [
-             :doctest,
-             :linkcheck,
-             :parse_error,
-             :example_block,
-             # Other available options are
-             # :autodocs_block, :cross_references, :docs_block, :eval_block, :example_block, :footnote, :meta_block, :missing_docs, :setup_block
-         ],
-         format = Documenter.HTML(analytics = "UA-90474609-3",
-                                  assets = ["assets/favicon.ico"],
-                                  canonical = "https://docs.sciml.ai/FunctionProperties/stable/"),
-         pages = pages)
+ENV["GKSwstype"] = "100"
 
-deploydocs(repo = "github.com/SciML/MultiScaleArrays.jl.git";
-           push_preview = true)
+makedocs(modules = [SciMLStructures],
+    sitename = "SciMLStructures.jl",
+    clean = true,
+    doctest = false,
+    linkcheck = true,
+    warnonly = [:missing_docs, :cross_references, :linkcheck],
+    format = Documenter.HTML(assets = ["assets/favicon.ico"],
+        canonical = "https://docs.sciml.ai/SciMLStructures/stable/"),
+    pages = pages)
+
+deploydocs(repo = "github.com/SciML/SciMLStructures.jl"; push_preview = true)

@@ -1,9 +1,9 @@
 module SciMLStructures
 
-function isscimlstructure end
+include("interface.jl")
+include("array.jl")
 
-function canonicalize end
-
-
+# public isscimlstructure, ismutablescimlstructure, hasportion, canonicalize,
+#        replace, replace!, Tunable, Constants, Caches, Discrete
 
 end
