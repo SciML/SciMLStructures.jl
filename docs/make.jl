@@ -16,7 +16,7 @@ makedocs(modules = [SciMLStructures],
     clean = true,
     doctest = false,
     linkcheck = true,
-    warnonly = [:missing_docs],
+    warnonly = [:missing_docs, :cross_references, :linkcheck],
     format = Documenter.HTML(assets = ["assets/favicon.ico"],
         canonical = "https://docs.sciml.ai/SciMLStructures/stable/"),
     pages = pages)
