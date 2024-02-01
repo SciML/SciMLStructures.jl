@@ -45,12 +45,14 @@ are defined are:
   non-constant when used in the context of an inverse problem solve. For example, this is the set of
   parameters to be optimized during a parameter estimation of an ODE.
     * Tunable parameters are expected to return an `AbstractVector` of unitless values.
+    * Tunable parameters are expected to be constant during the solution of the ODE.
 * Constants: the values which are to be considered constant by the solver, i.e. values which are not estimated
   in an inverse problem and which are unchanged in any operation by the user as part of the solver's usage.
 * Caches: the stored cache values of the struct, i.e. the values of the structure which are used as intermediates
   within other computations in order to avoid extra allocations.
 * Discrete: the discrete portions of the state captured inside of the structure. For example, discrete values
   stored outside of the `u` in the parameters to be modified in the callbacks of an ODE.
+    * Any parameter that is modified inside of callbacks should be considered Discrete.
 
 ## Definitions for Base Objects
 
