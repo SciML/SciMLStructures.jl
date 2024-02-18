@@ -10,5 +10,5 @@
 [![SciML Code Style](https://img.shields.io/static/v1?label=code%20style&message=SciML&color=9558b2&labelColor=389826)](https://github.com/SciML/SciMLStyle)
 
 SciMLStructures.jl defines a generic interface for interacting with solvers, estimation tooling, and more within
-the SciML ecosystem and the greater Julia universe. SciMLStructures.jl defines a structured enforcable interface
+the SciML ecosystem and the greater Julia universe. SciMLStructures.jl defines a structured enforceable interface
 which allows for solvers to be able to handle custom user types in an efficient and generalized way.

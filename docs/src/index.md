@@ -1,7 +1,7 @@
 # SciMLStructures.jl: Structured Objects for Non-State Values in System Solvers
 
 SciMLStructures.jl defines a generic interface for interacting with solvers, estimation tooling, and more within
-the SciML ecosystem and the greater Julia universe. SciMLStructures.jl defines a structured enforcable interface
+the SciML ecosystem and the greater Julia universe. SciMLStructures.jl defines a structured enforceable interface
 which allows for solvers to be able to handle custom user types in an efficient and generalized way.
 
 ## Installation

@@ -55,7 +55,7 @@ function canonicalize end
 """
     replace(::AbstractPortion, p::T1, new_values) -> p::T1
 
-Equivalent to canonicalize(::AbstractPortion, p::T1)[2](new_values), though allowed to
+Equivalent to `canonicalize(::AbstractPortion, p::T1)[2](new_values)`, though allowed to
 optimize and not construct intermediates. For more information on the arguments, see
 canonicalize.
 """
@@ -64,7 +64,7 @@ function replace end
 """
     replace!(::AbstractPortion, p::T1, new_values)::Nothing
 
-Equivalent to canonicalize(::AbstractPortion, p::T1)[2](new_values), though done in a mutating
+Equivalent to `canonicalize(::AbstractPortion, p::T1)[2](new_values)`, though done in a mutating
 fashion and is allowed to optimize and not construct intermediates. Requires a mutable
 SciMLStructure. For more information on the arguments, see canonicalize.
 """
