@@ -21,7 +21,7 @@ replace(::AbstractPortion, p::T1, new_values) -> p::T1
 replace!(::AbstractPortion, p::T1, new_values)::Nothing # Requires mutable
 ```
 
-### Portion Defintions
+### Portion Definitions
 
 The core function of the interface is the `canonicalize` function. `canonicalize` allows the user to define
 to the solver how to represent the given "portion" in a standard `AbstractVector` type which allows for
