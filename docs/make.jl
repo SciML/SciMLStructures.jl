@@ -6,7 +6,7 @@ cp("./docs/Project.toml", "./docs/src/assets/Project.toml", force = true)
 pages = [
     "Home" => "index.md",
     "interface.md",
-    "api.md",
+    "api.md"
 ]
 
 ENV["GKSwstype"] = "100"
