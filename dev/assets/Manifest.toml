@@ -214,7 +214,7 @@ version = "0.7.0"
 [[deps.SciMLStructures]]
 path = "/home/runner/work/SciMLStructures.jl/SciMLStructures.jl"
 uuid = "53ae85a6-f571-4167-b2af-e1d143709226"
-version = "1.0.0"
+version = "1.1.0"
 
 [[deps.Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
