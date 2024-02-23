@@ -27,24 +27,27 @@ to the solver how to represent the given "portion" in a standard `AbstractVector
 interfacing with standard tools like linear algebra in an efficient manner. The type of portions which
 are defined are:
 
-* Tunable: the tunable values/parameters, i.e. the values of the structure which are supposed to be considered
+  - Tunable: the tunable values/parameters, i.e. the values of the structure which are supposed to be considered
     non-constant when used in the context of an inverse problem solve. For example, this is the set of
     parameters to be optimized during a parameter estimation of an ODE.
-    * Tunable parameters are expected to return an `AbstractVector` of unitless values.
-    * Tunable parameters are expected to be constant during the solution of the ODE.
-* Constants: the values which are to be considered constant by the solver, i.e. values which are not estimated
+
+      + Tunable parameters are expected to return an `AbstractVector` of unitless values.
+      + Tunable parameters are expected to be constant during the solution of the ODE.
+
+  - Constants: the values which are to be considered constant by the solver, i.e. values which are not estimated
     in an inverse problem and which are unchanged in any operation by the user as part of the solver's usage.
-* Caches: the stored cache values of the struct, i.e. the values of the structure which are used as intermediates
+  - Caches: the stored cache values of the struct, i.e. the values of the structure which are used as intermediates
     within other computations in order to avoid extra allocations.
-* Discrete: the discrete portions of the state captured inside of the structure. For example, discrete values
+  - Discrete: the discrete portions of the state captured inside of the structure. For example, discrete values
     stored outside of the `u` in the parameters to be modified in the callbacks of an ODE.
-    * Any parameter that is modified inside of callbacks should be considered Discrete.
+
+      + Any parameter that is modified inside of callbacks should be considered Discrete.
 
 ## Definitions for Base Objects
 
-* `Vector`: returns an aliased version of itself as `Tunable`, and an empty vector matching type for `Constants`,
+  - `Vector`: returns an aliased version of itself as `Tunable`, and an empty vector matching type for `Constants`,
     `Caches`, and `Discrete`.
-* `Array`: returns the `vec(p)` aliased version of itself as `Tunable`, and an empty vector matching type for `Constants`,
+  - `Array`: returns the `vec(p)` aliased version of itself as `Tunable`, and an empty vector matching type for `Constants`,
     `Caches`, and `Discrete`.
 """
 function canonicalize end
@@ -90,18 +93,16 @@ writing the model function without allocations.
 
 Rules for caches:
 
-* Caches should be a mutable object.
-* Caches should not assume any previous value in them. All values within the cache should be
-  written into in the `f` cal that it is used from.
+  - Caches should be a mutable object.
+  - Caches should not assume any previous value in them. All values within the cache should be
+    written into in the `f` cal that it is used from.
 
 For making caches compatible with automatic differentiation, see
 [PreallocationTools.jl](https://docs.sciml.ai/PreallocationTools/stable/).
-
 """
 struct Caches <: AbstractPortion end
 
 """
 The discrete portion of the SciMLStructure
-
 """
 struct Discrete <: AbstractPortion end
