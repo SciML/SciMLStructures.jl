@@ -34,6 +34,7 @@ are defined are:
     
       + Tunable parameters are expected to return an `AbstractVector` of unitless values.
       + Tunable parameters are expected to be constant during the solution of the ODE.
+
   - Constants: the values which are to be considered constant by the solver, i.e. values which are not estimated
     in an inverse problem and which are unchanged in any operation by the user as part of the solver's usage.
   - Caches: the stored cache values of the struct, i.e. the values of the structure which are used as intermediates
