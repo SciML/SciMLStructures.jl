@@ -13,8 +13,7 @@ on:
     paths-ignore:
       - 'docs/**'
   schedule:
-      - cron: '34 21 * * 4'
-
+    - cron: '34 21 * * 4'
 jobs:
   test:
     name: ${{ matrix.package.repo }}/${{ matrix.package.group }}/${{ matrix.version }}
@@ -68,3 +67,5 @@ jobs:
       - uses: codecov/codecov-action@v4
         with:
           file: lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
