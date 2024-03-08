@@ -103,6 +103,11 @@ For making caches compatible with automatic differentiation, see
 struct Caches <: AbstractPortion end
 
 """
-The discrete portion of the SciMLStructure
+The discrete portion of the SciMLStructure.
 """
 struct Discrete <: AbstractPortion end
+
+"""
+The inputs portion of the SciMLStructure.
+"""
+struct Input <: AbstractPortion end
