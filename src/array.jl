@@ -16,4 +16,4 @@ canonicalize(::Constants, p::Array) = nothing, nothing, nothing
 canonicalize(::Caches, p::Array) = nothing, nothing, nothing
 canonicalize(::Discrete, p::Array) = nothing, nothing, nothing
 
-isscimlstructure(::AbstractVecOrMat) = true
+isscimlstructure(::Array) = true
