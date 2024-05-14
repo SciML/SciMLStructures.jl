@@ -15,3 +15,5 @@ canonicalize(::Tunable, p::Array) = vec(p), ArrayRepack(size(p)), true
 canonicalize(::Constants, p::Array) = nothing, nothing, nothing
 canonicalize(::Caches, p::Array) = nothing, nothing, nothing
 canonicalize(::Discrete, p::Array) = nothing, nothing, nothing
+
+isscimlstructure(::Array) = true
