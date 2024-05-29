@@ -1,7 +1,7 @@
-hasportion(::Tunable, ::Array) = true
-hasportion(::Constants, ::Array) = false
-hasportion(::Caches, ::Array) = false
-hasportion(::Discrete, ::Array) = false
+hasportion(::Tunable, ::AbstractArray) = true
+hasportion(::Constants, ::AbstractArray) = false
+hasportion(::Caches, ::AbstractArray) = false
+hasportion(::Discrete, ::AbstractArray) = false
 
 struct ArrayRepack{T}
     sz::T
@@ -11,9 +11,9 @@ function (f::ArrayRepack)(A)
     reshape(A, f.sz)
 end
 
-canonicalize(::Tunable, p::Array) = vec(p), ArrayRepack(size(p)), true
-canonicalize(::Constants, p::Array) = nothing, nothing, nothing
-canonicalize(::Caches, p::Array) = nothing, nothing, nothing
-canonicalize(::Discrete, p::Array) = nothing, nothing, nothing
+canonicalize(::Tunable, p::AbstractArray) = vec(p), ArrayRepack(size(p)), true
+canonicalize(::Constants, p::AbstractArray) = nothing, nothing, nothing
+canonicalize(::Caches, p::AbstractArray) = nothing, nothing, nothing
+canonicalize(::Discrete, p::AbstractArray) = nothing, nothing, nothing
 
-isscimlstructure(::Array) = true
+isscimlstructure(::AbstractArray) = true
