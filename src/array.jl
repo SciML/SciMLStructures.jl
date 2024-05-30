@@ -12,7 +12,7 @@ function (f::ArrayRepack)(A)
     reshape(convert(f.type, A), f.sz)
 end
 
-canonicalize(::Tunable, p::AbstractArray) = vec(p), ArrayRepack(size(p), typeof(A)), true
+canonicalize(::Tunable, p::AbstractArray) = vec(p), ArrayRepack(size(p), typeof(p)), true
 canonicalize(::Constants, p::AbstractArray) = nothing, nothing, nothing
 canonicalize(::Caches, p::AbstractArray) = nothing, nothing, nothing
 canonicalize(::Discrete, p::AbstractArray) = nothing, nothing, nothing
