@@ -9,7 +9,12 @@ struct ArrayRepack{T, Ty}
 end
 function (f::ArrayRepack)(A)
     @assert length(A) == prod(f.sz)
-    reshape(convert(f.type, A), f.sz)
+    A_ = if has_trivial_array_contstructor(f.type, A)
+        convert(f.type, A)
+    else
+        error("Cannot convert to original type")
+    end
+    reshape(A_, f.sz)
 end
 
 canonicalize(::Tunable, p::AbstractArray) = vec(p), ArrayRepack(size(p), typeof(p)), true
