@@ -1,5 +1,6 @@
 module SciMLStructures
 
+using ArrayInterface: has_trivial_array_constructor
 include("interface.jl")
 include("array.jl")
 
