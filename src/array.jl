@@ -12,7 +12,7 @@ function (f::ArrayRepack)(A)
     A_ = if has_trivial_array_contstructor(f.type, A)
         convert(f.type, A)
     else
-        error("The original type does not support the SciMLStructures interface via the AbstractArray `repack` rules. No method exists to take in a regular array and construct the parent type back. Please define the SciMLStructures interface for this type.")
+        error("The original type $(typeof(f.type)) does not support the SciMLStructures interface via the AbstractArray `repack` rules. No method exists to take in a regular array and construct the parent type back. Please define the SciMLStructures interface for this type.")
     end
     reshape(A_, f.sz)
 end

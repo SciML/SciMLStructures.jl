@@ -4,8 +4,10 @@ authors = ["SciML"]
 version = "1.2.0"
 
 [deps]
+ArrayInterface = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
 
 [compat]
+ArrayInterface = "7.10"
 Aqua = "0.8"
 SafeTestsets = "0.1"
 Test = "1.10"
