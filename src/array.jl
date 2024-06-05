@@ -23,3 +23,7 @@ canonicalize(::Caches, p::AbstractArray) = nothing, nothing, nothing
 canonicalize(::Discrete, p::AbstractArray) = nothing, nothing, nothing
 
 isscimlstructure(::AbstractArray) = true
+
+function SciMLStructures.replace(::SciMLStructures.Tunable, arr::AbstractArray, new_arr::AbstractArray)
+    reshape(new_arr, size(arr))
+end
