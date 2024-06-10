@@ -20,12 +20,7 @@ function (re::NTRepack)(x::AbstractVector)
 end
 
 function canonicalize(::Tunable, nt::NamedTuple)
-    cache = OrderedDict()
-    Functors.fmap(nt) do v
-        cache[objectid(v)] = vec(v)
-        v
-    end
-    reduce(vcat, values(cache)), NTRepack(nt), false
+    nt, NTRepack(nt), false
 end
 
 canonicalize(::Constants, p::NamedTuple) = nothing, nothing, nothing
