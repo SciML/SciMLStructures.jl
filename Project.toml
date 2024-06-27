@@ -1,7 +1,7 @@
 name = "SciMLStructures"
 uuid = "53ae85a6-f571-4167-b2af-e1d143709226"
 authors = ["SciML"]
-version = "1.4.0"
+version = "1.4.1"
 
 [deps]
 ArrayInterface = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
