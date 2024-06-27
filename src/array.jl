@@ -8,7 +8,7 @@ struct ArrayRepack{T}
 end
 function (f::ArrayRepack)(A)
     @assert length(A) == prod(size(f.x))
-    if has_trivial_array_constructor(f.type, A)
+    if has_trivial_array_constructor(typeof(f.x), A)
         restructure(f.x, A)
     else
         error("The original type $(typeof(f.x)) does not support the SciMLStructures interface via the AbstractArray `repack` rules. No method exists to take in a regular array and construct the parent type back. Please define the SciMLStructures interface for this type.")
