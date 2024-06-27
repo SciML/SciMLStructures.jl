@@ -1,6 +1,6 @@
 module SciMLStructures
 
-using ArrayInterface: has_trivial_array_constructor
+using ArrayInterface: has_trivial_array_constructor, restructure
 
 include("interface.jl")
 include("array.jl")
