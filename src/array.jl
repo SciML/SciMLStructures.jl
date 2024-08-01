@@ -20,7 +20,8 @@ canonicalize(::Constants, p::AbstractArray) = nothing, nothing, nothing
 canonicalize(::Caches, p::AbstractArray) = nothing, nothing, nothing
 canonicalize(::Discrete, p::AbstractArray) = nothing, nothing, nothing
 
-isscimlstructure(::AbstractArray) = true
+isscimlstructure(::AbstractArray) = false
+isscimlstructure(::AbstractArray{<:Number}) = true
 
 function SciMLStructures.replace(
         ::SciMLStructures.Tunable, arr::AbstractArray, new_arr::AbstractArray)
