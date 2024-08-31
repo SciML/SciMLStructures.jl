@@ -25,5 +25,5 @@ isscimlstructure(::AbstractArray{<:Number}) = true
 
 function SciMLStructures.replace(
         ::SciMLStructures.Tunable, arr::AbstractArray, new_arr::AbstractArray)
-    reshape(new_arr, size(arr))
+    restructure(arr, new_arr)
 end
