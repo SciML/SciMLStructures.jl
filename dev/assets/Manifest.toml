@@ -2,7 +2,7 @@
 
 julia_version = "1.10.5"
 manifest_format = "2.0"
-project_hash = "eadb70e89a6f7a821b5da22d0e8cdcbdedc75100"
+project_hash = "567b6500166d17a90d8e3db14f31fcd598a1feaf"
 
 [[deps.ANSIColoredPrinters]]
 git-tree-sha1 = "574baf8110975760d391c710b6341da1afa48d8c"
@@ -283,7 +283,7 @@ version = "0.7.0"
 deps = ["ArrayInterface"]
 path = "/home/runner/work/SciMLStructures.jl/SciMLStructures.jl"
 uuid = "53ae85a6-f571-4167-b2af-e1d143709226"
-version = "1.4.2"
+version = "1.5.0"
 
 [[deps.Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
