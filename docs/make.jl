@@ -6,6 +6,7 @@ cp("./docs/Project.toml", "./docs/src/assets/Project.toml", force = true)
 pages = [
     "Home" => "index.md",
     "interface.md",
+    "example.md",
     "api.md"
 ]
 
