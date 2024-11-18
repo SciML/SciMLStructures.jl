@@ -4,7 +4,7 @@ In this tutorial we will implement the SciMLStructures.jl interface for a parame
 object. This is useful when differentiating through ODE solves using SciMLSensitivity.jl
 and only part of the parameters are differentiable.
 
-```@example
+```@example basic_tutorial
 using OrdinaryDiffEqTsit5
 using LinearAlgebra
 
@@ -41,7 +41,7 @@ solve(prob, Tsit5())
 
 The ODE solves fine. Now let's try to differentiate with respect to the tunable parameters.
 
-```@example
+```@example basic_tutorial
 using Zygote
 using SciMLSensitivity
 
@@ -60,7 +60,7 @@ SciMLSensitivity does not know how to handle the parameter object, because it do
 implement the SciMLStructures interface. The bare minimum necessary for SciMLSensitivity
 is the `Tunable` portion.
 
-```@example
+```@example basic_tutorial
 import SciMLStructures as SS
 
 # Mark the struct as a SciMLStructure
@@ -112,7 +112,7 @@ end
 
 Now, we should be able to differentiate through the ODE solve.
 
-```@example
+```@example basic_tutorial
 Zygote.gradient(0.1ones(length(SS.canonicalize(SS.Tunable(), p)[1]))) do tunables
   newp = SS.replace(SS.Tunable(), p, tunables)
   newprob = remake(prob; p = newp)
@@ -123,7 +123,7 @@ end
 
 We can also implement a `Constants` portion to store the rest of the values:
 
-```@example
+```@example basic_tutorial
 SS.hasportion(::SS.Constants, ::Parameters) = true
 
 function SS.canonicalize(::SS.Constants, p::Parameters)
@@ -156,15 +156,15 @@ buf, repack, alias = SS.canonicalize(SS.Constants(), p)
 buf
 ```
 
-```@example
+```@example basic_tutorial
 repack(ones(length(buf)))
 ```
 
-```@example
+```@example basic_tutorial
 SS.replace(SS.Constants(), p, ones(length(buf)))
 ```
 
-```@example
+```@example basic_tutorial
 SS.replace!(SS.Constants(), p, ones(length(buf)))
 p
 ```
