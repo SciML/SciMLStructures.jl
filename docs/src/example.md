@@ -57,7 +57,8 @@ end
 ```
 
 SciMLSensitivity does not know how to handle the parameter object, because it does not
-implement the SciMLStructures interface.
+implement the SciMLStructures interface. The bare minimum necessary for SciMLSensitivity
+is the `Tunable` portion.
 
 ```@example
 import SciMLStructures as SS
@@ -119,3 +120,57 @@ Zygote.gradient(0.1ones(length(SS.canonicalize(SS.Tunable(), p)[1]))) do tunable
   return sum(sol.u[end])
 end
 ```
+
+We can also implement a `Constants` portion to store the rest of the values:
+
+```@example
+SS.hasportion(::SS.Constants, ::Parameters) = true
+
+function SS.canonicalize(::SS.Constants, p::Parameters)
+  buffer = mapreduce(vcat, p.subparams) do subpar
+    [subpar.q, subpar.r]
+  end
+  repack = let p = p
+    function repack(newbuffer)
+      SS.replace(SS.Constants(), p, newbuffer)
+    end
+  end
+
+  return buffer, repack, false
+end
+
+function SS.replace(::SS.Constants, p::Parameters, newbuffer)
+  subpars = [SubproblemParameters(p.subparams[i].p, newbuffer[2i-1], newbuffer[2i]) for i in eachindex(p.subparams)]
+  return Parameters(subpars, p.coeffs)
+end
+
+function SS.replace!(::SS.Constants, p::Parameters, newbuffer)
+  for i in eachindex(p.subparams)
+    p.subparams[i].q = newbuffer[2i-1]
+    p.subparams[i].r = newbuffer[2i]
+  end
+  return p
+end
+
+buf, repack, alias = SS.canonicalize(SS.Constants(), p)
+buf
+```
+
+```@example
+repack(ones(length(buf)))
+```
+
+```@example
+SS.replace(SS.Constants(), p, ones(length(buf)))
+```
+
+```@example
+SS.replace!(SS.Constants(), p, ones(length(buf)))
+p
+```
+
+In general, all values belonging to a portion should be concatenated into an array of the
+appropriate length in `canonicalize`. If a higher dimensional array is part of the portion,
+it should be flattened. If a portion contains values of multiple types, a non-concrete
+array should be used to store the values. `replace` and `replace!` should assume the array
+they receive have the same ordering as the one returned from `canonicalize`.
