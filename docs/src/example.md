@@ -46,7 +46,7 @@ using Zygote
 using SciMLSensitivity
 
 # 5 subparams[i].p, 50 elements in coeffs
-Zygote.gradient(0.1ones(55)) do tunables
+function simulate_with_tunables(tunables)
   subpars = [SubproblemParameters(tunables[i], subpar.q, subpar.r) for (i, subpar) in enumerate(p.subparams)]
   coeffs = reshape(tunables[6:end], size(p.coeffs))
   newp = Parameters(subpars, coeffs)
@@ -113,12 +113,7 @@ end
 Now, we should be able to differentiate through the ODE solve.
 
 ```@example basic_tutorial
-Zygote.gradient(0.1ones(length(SS.canonicalize(SS.Tunable(), p)[1]))) do tunables
-  newp = SS.replace(SS.Tunable(), p, tunables)
-  newprob = remake(prob; p = newp)
-  sol = solve(newprob, Tsit5())
-  return sum(sol.u[end])
-end
+Zygote.gradient(simulate_with_tunables, 0.1ones(length(SS.canonicalize(SS.Tunable(), p)[1])))
 ```
 
 We can also implement a `Constants` portion to store the rest of the values:
