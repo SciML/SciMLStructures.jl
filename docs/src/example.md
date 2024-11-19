@@ -51,7 +51,7 @@ function simulate_with_tunables(tunables)
   coeffs = reshape(tunables[6:end], size(p.coeffs))
   newp = Parameters(subpars, coeffs)
   newprob = remake(prob; p = newp)
-  sol = solve(prob, Tsit5())
+  sol = solve(newprob, Tsit5())
   return sum(sol.u[end])
 end
 ```
