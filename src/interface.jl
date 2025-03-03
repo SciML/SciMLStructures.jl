@@ -111,3 +111,9 @@ struct Discrete <: AbstractPortion end
 The inputs portion of the SciMLStructure.
 """
 struct Input <: AbstractPortion end
+
+"""
+The portion of the SciMLStructure used for parameters solely involved in initialization.
+These should be floating point numbers supporting automatic differentiation.
+"""
+struct Initials <: AbstractPortion end
