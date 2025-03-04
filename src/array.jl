@@ -2,6 +2,7 @@ hasportion(::Tunable, ::AbstractArray) = true
 hasportion(::Constants, ::AbstractArray) = false
 hasportion(::Caches, ::AbstractArray) = false
 hasportion(::Discrete, ::AbstractArray) = false
+hasportion(::Initials, ::AbstractArray) = false
 
 struct ArrayRepack{T}
     x::T
