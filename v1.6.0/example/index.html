@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>An example implementation of the interface · SciMLStructures.jl</title><meta name="title" content="An example implementation of the interface · SciMLStructures.jl"/><meta property="og:title" content="An example implementation of the interface · SciMLStructures.jl"/><meta property="twitter:title" content="An example implementation of the interface · SciMLStructures.jl"/><meta name="description" content="Documentation for SciMLStructures.jl."/><meta property="og:description" content="Documentation for SciMLStructures.jl."/><meta property="twitter:description" content="Documentation for SciMLStructures.jl."/><meta property="og:url" content="https://docs.sciml.ai/SciMLStructures/stable/example/"/><meta property="twitter:url" content="https://docs.sciml.ai/SciMLStructures/stable/example/"/><link rel="canonical" href="https://docs.sciml.ai/SciMLStructures/stable/example/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/favicon.ico" rel="icon" type="image/x-icon"/></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="SciMLStructures.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">SciMLStructures.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../interface/">The SciMLStructure Interface</a></li><li class="is-active"><a class="tocitem" href>An example implementation of the interface</a></li><li><a class="tocitem" href="../api/">API</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>An example implementation of the interface</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>An example implementation of the interface</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/SciML/SciMLStructures.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/SciML/SciMLStructures.jl/blob/main/docs/src/example.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="An-example-implementation-of-the-interface"><a class="docs-heading-anchor" href="#An-example-implementation-of-the-interface">An example implementation of the interface</a><a id="An-example-implementation-of-the-interface-1"></a><a class="docs-heading-anchor-permalink" href="#An-example-implementation-of-the-interface" title="Permalink"></a></h1><p>In this tutorial we will implement the SciMLStructures.jl interface for a parameter object. This is useful when differentiating through ODE solves using SciMLSensitivity.jl and only part of the parameters are differentiable.</p><pre><code class="language-julia hljs">using OrdinaryDiffEqTsit5
+using LinearAlgebra
+
+mutable struct SubproblemParameters{P, Q, R}
+  p::P # tunable
+  q::Q
+  r::R
+end
+
+mutable struct Parameters{P, C}
+  subparams::P
+  coeffs::C # tunable matrix
+end
+
+# the rhs is `du[i] = p[i] * u[i]^2 + q[i] * u[i] + r[i] * t` for i in 1:length(subparams)
+# and `du[length(subparams)+1:end] .= coeffs * u`
+function rhs!(du, u, p::Parameters, t)
+  for (i, subpars) in enumerate(p.subparams)
+    du[i] = subpars.p * u[i]^2 + subpars.q * u[i] + subpars.r * t
+  end
+  N = length(p.subparams)
+  mul!(view(du, (N+1):(length(du))), p.coeffs, u)
+  return nothing
+end
+
+u = sin.(0.1:0.1:1.0)
+subparams = [SubproblemParameters(0.1i, 0.2i, 0.3i) for i in 1:5]
+p = Parameters(subparams, cos.([0.1i+0.33j for i in 1:5, j in 1:10]))
+tspan = (0.0, 1.0)
+
+prob = ODEProblem(rhs!, u, tspan, p)
+solve(prob, Tsit5())</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">retcode: Success
+Interpolation: specialized 4th order &quot;free&quot; interpolation
+t: 10-element Vector{Float64}:
+ 0.0
+ 0.059183616050757386
+ 0.1360771727486267
+ 0.22818475707525648
+ 0.3360749487216346
+ 0.45772962887921664
+ 0.5924163997800234
+ 0.7357325377019479
+ 0.8989902952678406
+ 1.0
+u: 10-element Vector{Vector{Float64}}:
+ [0.09983341664682815, 0.19866933079506122, 0.29552020666133955, 0.3894183423086505, 0.479425538604203, 0.5646424733950354, 0.644217687237691, 0.7173560908995228, 0.7833269096274834, 0.8414709848078965]
+ [0.10160991266213928, 0.2049747306000666, 0.30944786780614314, 0.414339952464366, 0.5189074793146325, 0.4277439621710761, 0.49470604177368094, 0.5567251821349591, 0.6131817085052227, 0.6635115259350265]
+ [0.10553475891975872, 0.2166340454297757, 0.3333829437428825, 0.4558617686570926, 0.5841184877285303, 0.30187725522101444, 0.35322626066669965, 0.40104594607688127, 0.4448585129620269, 0.48422620063632965]
+ [0.11268250742722402, 0.23595836314116952, 0.37132238442043486, 0.520606039865671, 0.686040342800102, 0.20852411453084613, 0.24116795805475708, 0.27140213106131283, 0.29892454368792054, 0.3234602010853158]
+ [0.12451766458751326, 0.26638554991172025, 0.4297276337548382, 0.6201279099003717, 0.8452887060583947, 0.15587729866191705, 0.16494239469062122, 0.1723594408342833, 0.17805432841958535, 0.18197015601225494]
+ [0.1424568027179805, 0.31138785979563577, 0.515662923265108, 0.7686219006978873, 1.0912322428126369, 0.1484656108841341, 0.12651211100010265, 0.10329454392230192, 0.07904489190626608, 0.05400544945907037]
+ [0.16816604279924705, 0.37541292610766974, 0.6391555887699084, 0.9888751338907404, 1.4786832578583244, 0.18796898196527492, 0.12297199993555565, 0.05674632233161879, -0.010046345767215468, -0.07673863410002377]
+ [0.20250304713227682, 0.46140733796650735, 0.8091952073660615, 1.3088405480567593, 2.10052046454696, 0.2760461622907774, 0.1504084589368719, 0.023267923979695338, -0.10410509638253343, -0.2304379330342771]
+ [0.2507433301410456, 0.5843519838184548, 1.0630348065832451, 1.8306365759457064, 3.312361110386439, 0.43312868402858967, 0.21031594749526958, -0.014598196464214468, -0.23936648007015005, -0.4617430929312633]
+ [0.28565307016985214, 0.6753057475316043, 1.26036991556984, 2.280737057410529, 4.634267598644862, 0.5634616258003338, 0.2578376085098403, -0.05036263693510245, -0.35805967555946355, -0.6621791002644273]</code></pre><p>The ODE solves fine. Now let&#39;s try to differentiate with respect to the tunable parameters.</p><pre><code class="language-julia hljs">using Zygote
+using SciMLSensitivity
+
+# 5 subparams[i].p, 50 elements in coeffs
+function simulate_with_tunables(tunables)
+  subpars = [SubproblemParameters(tunables[i], subpar.q, subpar.r) for (i, subpar) in enumerate(p.subparams)]
+  coeffs = reshape(tunables[6:end], size(p.coeffs))
+  newp = Parameters(subpars, coeffs)
+  newprob = remake(prob; p = newp)
+  sol = solve(prob, Tsit5())
+  return sum(sol.u[end])
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">simulate_with_tunables (generic function with 1 method)</code></pre><p>SciMLSensitivity does not know how to handle the parameter object, because it does not implement the SciMLStructures interface. The bare minimum necessary for SciMLSensitivity is the <code>Tunable</code> portion.</p><pre><code class="language-julia hljs">import SciMLStructures as SS
+
+# Mark the struct as a SciMLStructure
+SS.isscimlstructure(::Parameters) = true
+# It is mutable
+SS.ismutablescimlstructure(::Parameters) = true
+
+# Only contains `Tunable` portion
+# We could also add a `Constants` portion to contain the values that are
+# not tunable. The implementation would be similar to this one.
+SS.hasportion(::SS.Tunable, ::Parameters) = true
+
+function SS.canonicalize(::SS.Tunable, p::Parameters)
+  # concatenate all tunable values into a single vector
+  buffer = vcat([subpar.p for subpar in p.subparams], vec(p.coeffs))
+
+  # repack takes a new vector of the same length as `buffer`, and constructs
+  # a new `Parameters` object using the values from the new vector for tunables
+  # and retaining old values for other parameters. This is exactly what replace does,
+  # so we can use that instead.
+  repack = let p = p
+    function repack(newbuffer)
+      SS.replace(SS.Tunable(), p, newbuffer)
+    end
+  end
+  # the canonicalized vector, the repack function, and a boolean indicating
+  # whether the buffer aliases values in the parameter object (here, it doesn&#39;t)
+  return buffer, repack, false
+end
+
+function SS.replace(::SS.Tunable, p::Parameters, newbuffer)
+  N = length(p.subparams) + length(p.coeffs)
+  @assert length(newbuffer) == N
+  subparams = [SubproblemParameters(newbuffer[i], subpar.q, subpar.r) for (i, subpar) in enumerate(p.subparams)]
+  coeffs = reshape(view(newbuffer, (length(p.subparams)+1):length(newbuffer)), size(p.coeffs))
+  return Parameters(subparams, coeffs)
+end
+
+function SS.replace!(::SS.Tunable, p::Parameters, newbuffer)
+  N = length(p.subparams) + length(p.coeffs)
+  @assert length(newbuffer) == N
+  for (subpar, val) in zip(p.subparams, newbuffer)
+    subpar.p = val
+  end
+  copyto!(coeffs, view(newbuffer, (length(p.subparams)+1):length(newbuffer)))
+  return p
+end</code></pre><p>Now, we should be able to differentiate through the ODE solve.</p><pre><code class="language-julia hljs">Zygote.gradient(simulate_with_tunables, 0.1ones(length(SS.canonicalize(SS.Tunable(), p)[1])))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">(nothing,)</code></pre><p>We can also implement a <code>Constants</code> portion to store the rest of the values:</p><pre><code class="language-julia hljs">SS.hasportion(::SS.Constants, ::Parameters) = true
+
+function SS.canonicalize(::SS.Constants, p::Parameters)
+  buffer = mapreduce(vcat, p.subparams) do subpar
+    [subpar.q, subpar.r]
+  end
+  repack = let p = p
+    function repack(newbuffer)
+      SS.replace(SS.Constants(), p, newbuffer)
+    end
+  end
+
+  return buffer, repack, false
+end
+
+function SS.replace(::SS.Constants, p::Parameters, newbuffer)
+  subpars = [SubproblemParameters(p.subparams[i].p, newbuffer[2i-1], newbuffer[2i]) for i in eachindex(p.subparams)]
+  return Parameters(subpars, p.coeffs)
+end
+
+function SS.replace!(::SS.Constants, p::Parameters, newbuffer)
+  for i in eachindex(p.subparams)
+    p.subparams[i].q = newbuffer[2i-1]
+    p.subparams[i].r = newbuffer[2i]
+  end
+  return p
+end
+
+buf, repack, alias = SS.canonicalize(SS.Constants(), p)
+buf</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">10-element Vector{Float64}:
+ 0.2
+ 0.3
+ 0.4
+ 0.6
+ 0.6000000000000001
+ 0.8999999999999999
+ 0.8
+ 1.2
+ 1.0
+ 1.5</code></pre><pre><code class="language-julia hljs">repack(ones(length(buf)))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.Parameters{Vector{Main.SubproblemParameters{Float64, Float64, Float64}}, Matrix{Float64}}(Main.SubproblemParameters{Float64, Float64, Float64}[Main.SubproblemParameters{Float64, Float64, Float64}(0.1, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.2, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.30000000000000004, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.4, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.5, 1.0, 1.0)], [0.9089657496748851 0.7248360107409052 … -0.9974383404070185 -0.9667981925794609; 0.862807070514761 0.6524374681640518 … -0.9995965384680858 -0.9364566872907962; … ; 0.7451744023448704 0.4888720818605275 … -0.9740282491988521 -0.848100031710408; 0.674875760071267 0.39933952940627304 … -0.9465572317631765 -0.7909677119144165])</code></pre><pre><code class="language-julia hljs">SS.replace(SS.Constants(), p, ones(length(buf)))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.Parameters{Vector{Main.SubproblemParameters{Float64, Float64, Float64}}, Matrix{Float64}}(Main.SubproblemParameters{Float64, Float64, Float64}[Main.SubproblemParameters{Float64, Float64, Float64}(0.1, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.2, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.30000000000000004, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.4, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.5, 1.0, 1.0)], [0.9089657496748851 0.7248360107409052 … -0.9974383404070185 -0.9667981925794609; 0.862807070514761 0.6524374681640518 … -0.9995965384680858 -0.9364566872907962; … ; 0.7451744023448704 0.4888720818605275 … -0.9740282491988521 -0.848100031710408; 0.674875760071267 0.39933952940627304 … -0.9465572317631765 -0.7909677119144165])</code></pre><pre><code class="language-julia hljs">SS.replace!(SS.Constants(), p, ones(length(buf)))
+p</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.Parameters{Vector{Main.SubproblemParameters{Float64, Float64, Float64}}, Matrix{Float64}}(Main.SubproblemParameters{Float64, Float64, Float64}[Main.SubproblemParameters{Float64, Float64, Float64}(0.1, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.2, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.30000000000000004, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.4, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.5, 1.0, 1.0)], [0.9089657496748851 0.7248360107409052 … -0.9974383404070185 -0.9667981925794609; 0.862807070514761 0.6524374681640518 … -0.9995965384680858 -0.9364566872907962; … ; 0.7451744023448704 0.4888720818605275 … -0.9740282491988521 -0.848100031710408; 0.674875760071267 0.39933952940627304 … -0.9465572317631765 -0.7909677119144165])</code></pre><p>In general, all values belonging to a portion should be concatenated into an array of the appropriate length in <code>canonicalize</code>. If a higher dimensional array is part of the portion, it should be flattened. If a portion contains values of multiple types, a non-concrete array should be used to store the values. <code>replace</code> and <code>replace!</code> should assume the array they receive have the same ordering as the one returned from <code>canonicalize</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../interface/">« The SciMLStructure Interface</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.8.0 on <span class="colophon-date" title="Tuesday 19 November 2024 00:57">Tuesday 19 November 2024</span>. Using Julia version 1.11.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

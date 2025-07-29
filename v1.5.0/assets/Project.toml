@@ -1,0 +1,7 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+SciMLStructures = "53ae85a6-f571-4167-b2af-e1d143709226"
+
+[compat]
+Documenter = "1"
+SciMLStructures = "1"
