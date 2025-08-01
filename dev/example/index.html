@@ -3,25 +3,25 @@
 using LinearAlgebra
 
 mutable struct SubproblemParameters{P, Q, R}
-  p::P # tunable
-  q::Q
-  r::R
+    p::P # tunable
+    q::Q
+    r::R
 end
 
 mutable struct Parameters{P, C}
-  subparams::P
-  coeffs::C # tunable matrix
+    subparams::P
+    coeffs::C # tunable matrix
 end
 
 # the rhs is `du[i] = p[i] * u[i]^2 + q[i] * u[i] + r[i] * t` for i in 1:length(subparams)
 # and `du[length(subparams)+1:end] .= coeffs * u`
 function rhs!(du, u, p::Parameters, t)
-  for (i, subpars) in enumerate(p.subparams)
-    du[i] = subpars.p * u[i]^2 + subpars.q * u[i] + subpars.r * t
-  end
-  N = length(p.subparams)
-  mul!(view(du, (N+1):(length(du))), p.coeffs, u)
-  return nothing
+    for (i, subpars) in enumerate(p.subparams)
+        du[i] = subpars.p * u[i]^2 + subpars.q * u[i] + subpars.r * t
+    end
+    N = length(p.subparams)
+    mul!(view(du, (N + 1):(length(du))), p.coeffs, u)
+    return nothing
 end
 
 u = sin.(0.1:0.1:1.0)
@@ -58,12 +58,13 @@ using SciMLSensitivity
 
 # 5 subparams[i].p, 50 elements in coeffs
 function simulate_with_tunables(tunables)
-  subpars = [SubproblemParameters(tunables[i], subpar.q, subpar.r) for (i, subpar) in enumerate(p.subparams)]
-  coeffs = reshape(tunables[6:end], size(p.coeffs))
-  newp = Parameters(subpars, coeffs)
-  newprob = remake(prob; p = newp)
-  sol = solve(newprob, Tsit5())
-  return sum(sol.u[end])
+    subpars = [SubproblemParameters(tunables[i], subpar.q, subpar.r)
+               for (i, subpar) in enumerate(p.subparams)]
+    coeffs = reshape(tunables[6:end], size(p.coeffs))
+    newp = Parameters(subpars, coeffs)
+    newprob = remake(prob; p = newp)
+    sol = solve(newprob, Tsit5())
+    return sum(sol.u[end])
 end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">simulate_with_tunables (generic function with 1 method)</code></pre><p>SciMLSensitivity does not know how to handle the parameter object, because it does not implement the SciMLStructures interface. The bare minimum necessary for SciMLSensitivity is the <code>Tunable</code> portion.</p><pre><code class="language-julia hljs">import SciMLStructures as SS
 
 # Mark the struct as a SciMLStructure
@@ -77,65 +78,67 @@ SS.ismutablescimlstructure(::Parameters) = true
 SS.hasportion(::SS.Tunable, ::Parameters) = true
 
 function SS.canonicalize(::SS.Tunable, p::Parameters)
-  # concatenate all tunable values into a single vector
-  buffer = vcat([subpar.p for subpar in p.subparams], vec(p.coeffs))
+    # concatenate all tunable values into a single vector
+    buffer = vcat([subpar.p for subpar in p.subparams], vec(p.coeffs))
 
-  # repack takes a new vector of the same length as `buffer`, and constructs
-  # a new `Parameters` object using the values from the new vector for tunables
-  # and retaining old values for other parameters. This is exactly what replace does,
-  # so we can use that instead.
-  repack = let p = p
-    function repack(newbuffer)
-      SS.replace(SS.Tunable(), p, newbuffer)
+    # repack takes a new vector of the same length as `buffer`, and constructs
+    # a new `Parameters` object using the values from the new vector for tunables
+    # and retaining old values for other parameters. This is exactly what replace does,
+    # so we can use that instead.
+    repack = let p = p
+        function repack(newbuffer)
+            SS.replace(SS.Tunable(), p, newbuffer)
+        end
     end
-  end
-  # the canonicalized vector, the repack function, and a boolean indicating
-  # whether the buffer aliases values in the parameter object (here, it doesn&#39;t)
-  return buffer, repack, false
+    # the canonicalized vector, the repack function, and a boolean indicating
+    # whether the buffer aliases values in the parameter object (here, it doesn&#39;t)
+    return buffer, repack, false
 end
 
 function SS.replace(::SS.Tunable, p::Parameters, newbuffer)
-  N = length(p.subparams) + length(p.coeffs)
-  @assert length(newbuffer) == N
-  subparams = [SubproblemParameters(newbuffer[i], subpar.q, subpar.r) for (i, subpar) in enumerate(p.subparams)]
-  coeffs = reshape(view(newbuffer, (length(p.subparams)+1):length(newbuffer)), size(p.coeffs))
-  return Parameters(subparams, coeffs)
+    N = length(p.subparams) + length(p.coeffs)
+    @assert length(newbuffer) == N
+    subparams = [SubproblemParameters(newbuffer[i], subpar.q, subpar.r)
+                 for (i, subpar) in enumerate(p.subparams)]
+    coeffs = reshape(view(newbuffer, (length(p.subparams) + 1):length(newbuffer)), size(p.coeffs))
+    return Parameters(subparams, coeffs)
 end
 
 function SS.replace!(::SS.Tunable, p::Parameters, newbuffer)
-  N = length(p.subparams) + length(p.coeffs)
-  @assert length(newbuffer) == N
-  for (subpar, val) in zip(p.subparams, newbuffer)
-    subpar.p = val
-  end
-  copyto!(coeffs, view(newbuffer, (length(p.subparams)+1):length(newbuffer)))
-  return p
+    N = length(p.subparams) + length(p.coeffs)
+    @assert length(newbuffer) == N
+    for (subpar, val) in zip(p.subparams, newbuffer)
+        subpar.p = val
+    end
+    copyto!(coeffs, view(newbuffer, (length(p.subparams) + 1):length(newbuffer)))
+    return p
 end</code></pre><p>Now, we should be able to differentiate through the ODE solve.</p><pre><code class="language-julia hljs">Zygote.gradient(simulate_with_tunables, 0.1ones(length(SS.canonicalize(SS.Tunable(), p)[1])))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">([0.038255528143720956, 0.20160970105121204, 0.6028361441951111, 1.4381629830522815, 3.049526353847319, 0.20317791231217086, 0.20317791231217086, 0.20317791231217086, 0.20317791231217086, 0.20317791231217086  …  1.426647638297789, 1.4266476382977893, 1.426647638297789, 1.4266476897495826, 1.4266476897495828, 1.502086286488611, 1.502086286488611, 1.5020862864886109, 1.5020862864886113, 1.502086286488611],)</code></pre><p>We can also implement a <code>Constants</code> portion to store the rest of the values:</p><pre><code class="language-julia hljs">SS.hasportion(::SS.Constants, ::Parameters) = true
 
 function SS.canonicalize(::SS.Constants, p::Parameters)
-  buffer = mapreduce(vcat, p.subparams) do subpar
-    [subpar.q, subpar.r]
-  end
-  repack = let p = p
-    function repack(newbuffer)
-      SS.replace(SS.Constants(), p, newbuffer)
+    buffer = mapreduce(vcat, p.subparams) do subpar
+        [subpar.q, subpar.r]
     end
-  end
+    repack = let p = p
+        function repack(newbuffer)
+            SS.replace(SS.Constants(), p, newbuffer)
+        end
+    end
 
-  return buffer, repack, false
+    return buffer, repack, false
 end
 
 function SS.replace(::SS.Constants, p::Parameters, newbuffer)
-  subpars = [SubproblemParameters(p.subparams[i].p, newbuffer[2i-1], newbuffer[2i]) for i in eachindex(p.subparams)]
-  return Parameters(subpars, p.coeffs)
+    subpars = [SubproblemParameters(p.subparams[i].p, newbuffer[2i - 1], newbuffer[2i])
+               for i in eachindex(p.subparams)]
+    return Parameters(subpars, p.coeffs)
 end
 
 function SS.replace!(::SS.Constants, p::Parameters, newbuffer)
-  for i in eachindex(p.subparams)
-    p.subparams[i].q = newbuffer[2i-1]
-    p.subparams[i].r = newbuffer[2i]
-  end
-  return p
+    for i in eachindex(p.subparams)
+        p.subparams[i].q = newbuffer[2i - 1]
+        p.subparams[i].r = newbuffer[2i]
+    end
+    return p
 end
 
 buf, repack, alias = SS.canonicalize(SS.Constants(), p)
@@ -150,4 +153,4 @@ buf</code></pre><pre class="documenter-example-output"><code class="nohighlight 
  1.2
  1.0
  1.5</code></pre><pre><code class="language-julia hljs">repack(ones(length(buf)))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.Parameters{Vector{Main.SubproblemParameters{Float64, Float64, Float64}}, Matrix{Float64}}(Main.SubproblemParameters{Float64, Float64, Float64}[Main.SubproblemParameters{Float64, Float64, Float64}(0.1, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.2, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.30000000000000004, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.4, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.5, 1.0, 1.0)], [0.9089657496748851 0.7248360107409052 … -0.9974383404070185 -0.9667981925794609; 0.862807070514761 0.6524374681640518 … -0.9995965384680858 -0.9364566872907962; … ; 0.7451744023448704 0.4888720818605275 … -0.9740282491988521 -0.848100031710408; 0.674875760071267 0.39933952940627304 … -0.9465572317631765 -0.7909677119144165])</code></pre><pre><code class="language-julia hljs">SS.replace(SS.Constants(), p, ones(length(buf)))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.Parameters{Vector{Main.SubproblemParameters{Float64, Float64, Float64}}, Matrix{Float64}}(Main.SubproblemParameters{Float64, Float64, Float64}[Main.SubproblemParameters{Float64, Float64, Float64}(0.1, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.2, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.30000000000000004, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.4, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.5, 1.0, 1.0)], [0.9089657496748851 0.7248360107409052 … -0.9974383404070185 -0.9667981925794609; 0.862807070514761 0.6524374681640518 … -0.9995965384680858 -0.9364566872907962; … ; 0.7451744023448704 0.4888720818605275 … -0.9740282491988521 -0.848100031710408; 0.674875760071267 0.39933952940627304 … -0.9465572317631765 -0.7909677119144165])</code></pre><pre><code class="language-julia hljs">SS.replace!(SS.Constants(), p, ones(length(buf)))
-p</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.Parameters{Vector{Main.SubproblemParameters{Float64, Float64, Float64}}, Matrix{Float64}}(Main.SubproblemParameters{Float64, Float64, Float64}[Main.SubproblemParameters{Float64, Float64, Float64}(0.1, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.2, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.30000000000000004, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.4, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.5, 1.0, 1.0)], [0.9089657496748851 0.7248360107409052 … -0.9974383404070185 -0.9667981925794609; 0.862807070514761 0.6524374681640518 … -0.9995965384680858 -0.9364566872907962; … ; 0.7451744023448704 0.4888720818605275 … -0.9740282491988521 -0.848100031710408; 0.674875760071267 0.39933952940627304 … -0.9465572317631765 -0.7909677119144165])</code></pre><p>In general, all values belonging to a portion should be concatenated into an array of the appropriate length in <code>canonicalize</code>. If a higher dimensional array is part of the portion, it should be flattened. If a portion contains values of multiple types, a non-concrete array should be used to store the values. <code>replace</code> and <code>replace!</code> should assume the array they receive have the same ordering as the one returned from <code>canonicalize</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../interface/">« The SciMLStructure Interface</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Thursday 31 July 2025 13:27">Thursday 31 July 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+p</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.Parameters{Vector{Main.SubproblemParameters{Float64, Float64, Float64}}, Matrix{Float64}}(Main.SubproblemParameters{Float64, Float64, Float64}[Main.SubproblemParameters{Float64, Float64, Float64}(0.1, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.2, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.30000000000000004, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.4, 1.0, 1.0), Main.SubproblemParameters{Float64, Float64, Float64}(0.5, 1.0, 1.0)], [0.9089657496748851 0.7248360107409052 … -0.9974383404070185 -0.9667981925794609; 0.862807070514761 0.6524374681640518 … -0.9995965384680858 -0.9364566872907962; … ; 0.7451744023448704 0.4888720818605275 … -0.9740282491988521 -0.848100031710408; 0.674875760071267 0.39933952940627304 … -0.9465572317631765 -0.7909677119144165])</code></pre><p>In general, all values belonging to a portion should be concatenated into an array of the appropriate length in <code>canonicalize</code>. If a higher dimensional array is part of the portion, it should be flattened. If a portion contains values of multiple types, a non-concrete array should be used to store the values. <code>replace</code> and <code>replace!</code> should assume the array they receive have the same ordering as the one returned from <code>canonicalize</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../interface/">« The SciMLStructure Interface</a><a class="docs-footer-nextpage" href="../api/">API »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Friday 1 August 2025 11:52">Friday 1 August 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
