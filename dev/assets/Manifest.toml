@@ -1,13 +1,13 @@
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.6"
+julia_version = "1.11.7"
 manifest_format = "2.0"
 project_hash = "dd607a11492a53949d026399a3a854cf55bb60b6"
 
 [[deps.ADTypes]]
-git-tree-sha1 = "60665b326b75db6517939d0e1875850bc4a54368"
+git-tree-sha1 = "27cecae79e5cc9935255f90c53bb831cc3c870d7"
 uuid = "47edcb42-4c32-4615-8424-f2b9edc5f35b"
-version = "1.17.0"
+version = "1.18.0"
 weakdeps = ["ChainRulesCore", "ConstructionBase", "EnzymeCore"]
 
     [deps.ADTypes.extensions]
@@ -290,9 +290,9 @@ version = "1.11.0"
 
 [[deps.DiffEqBase]]
 deps = ["ArrayInterface", "ConcreteStructs", "DocStringExtensions", "EnzymeCore", "FastBroadcast", "FastClosures", "FastPower", "FunctionWrappers", "FunctionWrappersWrappers", "LinearAlgebra", "Logging", "Markdown", "MuladdMacro", "PrecompileTools", "Printf", "RecursiveArrayTools", "Reexport", "SciMLBase", "SciMLOperators", "SciMLStructures", "Setfield", "Static", "StaticArraysCore", "Statistics", "SymbolicIndexingInterface", "TruncatedStacktraces"]
-git-tree-sha1 = "6df3b15d504315ec306118aed14f9d7af9f83db1"
+git-tree-sha1 = "087632db966c90079a5534e4147afea9136ca39a"
 uuid = "2b5f629d-d688-5b77-993f-72d75c75574e"
-version = "6.189.1"
+version = "6.190.2"
 
     [deps.DiffEqBase.extensions]
     DiffEqBaseCUDAExt = "CUDA"
@@ -449,9 +449,9 @@ version = "1.0.5"
 
 [[deps.Enzyme]]
 deps = ["CEnum", "EnzymeCore", "Enzyme_jll", "GPUCompiler", "InteractiveUtils", "LLVM", "Libdl", "LinearAlgebra", "ObjectFile", "PrecompileTools", "Preferences", "Printf", "Random", "SparseArrays"]
-git-tree-sha1 = "c1535819eea1013393c7b1d5132aed9e553ce625"
+git-tree-sha1 = "d502e2d41e8d6d0b0f99b6b3a19fad5f7a54e860"
 uuid = "7da242da-08ed-463a-9acd-ee780be4f1d9"
-version = "0.13.73"
+version = "0.13.77"
 
     [deps.Enzyme.extensions]
     EnzymeBFloat16sExt = "BFloat16s"
@@ -480,9 +480,9 @@ weakdeps = ["Adapt"]
 
 [[deps.Enzyme_jll]]
 deps = ["Artifacts", "JLLWrappers", "LazyArtifacts", "Libdl", "TOML"]
-git-tree-sha1 = "42dcf182618bb4b8f7f9bed5880120ac402a9f59"
+git-tree-sha1 = "1443bd3c94e8b3db8123dca73cc8f817a301d44c"
 uuid = "7cc45869-7501-5eee-bdea-0790c847d4ef"
-version = "0.0.195+0"
+version = "0.0.198+0"
 
 [[deps.Expat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -570,9 +570,9 @@ version = "2.28.1"
 
 [[deps.ForwardDiff]]
 deps = ["CommonSubexpressions", "DiffResults", "DiffRules", "LinearAlgebra", "LogExpFunctions", "NaNMath", "Preferences", "Printf", "Random", "SpecialFunctions"]
-git-tree-sha1 = "f0090eb9f8e9d151563dd2300fc3ca3f76b90fe8"
+git-tree-sha1 = "dc41303865a16274ecb8450c220021ce1e0cf05f"
 uuid = "f6369f11-7733-5829-9624-2563aa707210"
-version = "1.2.0"
+version = "1.2.1"
 weakdeps = ["StaticArrays"]
 
     [deps.ForwardDiff.extensions]
@@ -762,9 +762,9 @@ version = "1.3.0"
 
 [[deps.LazyArrays]]
 deps = ["ArrayLayouts", "FillArrays", "LinearAlgebra", "MacroTools", "SparseArrays"]
-git-tree-sha1 = "76627adb8c542c6b73f68d4bfd0aa71c9893a079"
+git-tree-sha1 = "21057b6f4f5db1475e653735fda7d1de1c267b46"
 uuid = "5078a376-72f3-5289-bfd5-ec5146d43c02"
-version = "2.6.2"
+version = "2.6.3"
 
     [deps.LazyArrays.extensions]
     LazyArraysBandedMatricesExt = "BandedMatrices"
@@ -837,9 +837,9 @@ version = "1.11.0"
 
 [[deps.LinearSolve]]
 deps = ["ArrayInterface", "ChainRulesCore", "ConcreteStructs", "DocStringExtensions", "EnumX", "GPUArraysCore", "InteractiveUtils", "Krylov", "LazyArrays", "Libdl", "LinearAlgebra", "MKL_jll", "Markdown", "OpenBLAS_jll", "PrecompileTools", "Preferences", "RecursiveArrayTools", "Reexport", "SciMLBase", "SciMLOperators", "Setfield", "StaticArraysCore", "UnPack"]
-git-tree-sha1 = "69cee52e516c859e64adba702ac382c0498a4e29"
+git-tree-sha1 = "e479c96c20e3fe6067d7ee6618839236d156f060"
 uuid = "7ed4a6bd-45f5-4d41-b270-4a48e9bafcae"
-version = "3.40.0"
+version = "3.40.1"
 
     [deps.LinearSolve.extensions]
     LinearSolveAMDGPUExt = "AMDGPU"
@@ -1023,9 +1023,9 @@ version = "0.8.5+0"
 
 [[deps.OpenSSH_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "OpenSSL_jll", "Zlib_jll"]
-git-tree-sha1 = "cb7acd5d10aff809b4d0191dfe1956c2edf35800"
+git-tree-sha1 = "1f2f0911e1c02f28a390bb720f97f3349c4dcefb"
 uuid = "9bd350c2-7e96-507f-8002-3f2e150b4e1b"
-version = "10.0.1+0"
+version = "10.0.2+0"
 
 [[deps.OpenSSL_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -1320,9 +1320,9 @@ version = "0.1.0"
 
 [[deps.SciMLBase]]
 deps = ["ADTypes", "Accessors", "Adapt", "ArrayInterface", "CommonSolve", "ConstructionBase", "Distributed", "DocStringExtensions", "EnumX", "FunctionWrappersWrappers", "IteratorInterfaceExtensions", "LinearAlgebra", "Logging", "Markdown", "Moshi", "PreallocationTools", "PrecompileTools", "Preferences", "Printf", "RecipesBase", "RecursiveArrayTools", "Reexport", "RuntimeGeneratedFunctions", "SciMLOperators", "SciMLStructures", "StaticArraysCore", "Statistics", "SymbolicIndexingInterface"]
-git-tree-sha1 = "5982c08327b320f913404dc06161ac6c055093c4"
+git-tree-sha1 = "16fa030fb4bd4df373a677eca0460c3eee791ab2"
 uuid = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
-version = "2.117.1"
+version = "2.120.0"
 
     [deps.SciMLBase.extensions]
     SciMLBaseChainRulesCoreExt = "ChainRulesCore"
@@ -1369,9 +1369,9 @@ version = "0.1.11"
 
 [[deps.SciMLOperators]]
 deps = ["Accessors", "ArrayInterface", "DocStringExtensions", "LinearAlgebra", "MacroTools"]
-git-tree-sha1 = "753026a73e1bee963239016a162db8dc1935a153"
+git-tree-sha1 = "024d829102878141aaee5cf8f8288bcabd2f57a0"
 uuid = "c0aeaf25-5076-4817-a8d5-81caf7dfa961"
-version = "1.7.1"
+version = "1.7.2"
 weakdeps = ["SparseArrays", "StaticArraysCore"]
 
     [deps.SciMLOperators.extensions]
@@ -1563,9 +1563,9 @@ version = "7.7.0+0"
 
 [[deps.SymbolicIndexingInterface]]
 deps = ["Accessors", "ArrayInterface", "RuntimeGeneratedFunctions", "StaticArraysCore"]
-git-tree-sha1 = "93104ca226670c0cb92ba8bc6998852ad55a2d4c"
+git-tree-sha1 = "b19cf024a2b11d72bef7c74ac3d1cbe86ec9e4ed"
 uuid = "2efcf032-c050-4f8e-a9bb-153293bab1f5"
-version = "0.3.43"
+version = "0.3.44"
 
     [deps.SymbolicIndexingInterface.extensions]
     SymbolicIndexingInterfacePrettyTablesExt = "PrettyTables"
