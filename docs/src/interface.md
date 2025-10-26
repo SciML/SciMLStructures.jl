@@ -9,7 +9,7 @@ isscimlstructure(p)::Bool
 ismutablescimlstructure(p)::Bool
 ```
 
-Returns whether the object satisfies the SciMLStructure interface. Defaults to `false` and types
+Returns whether the object satisfies the SciMLStructure interface. Besides `AbstractArray{<:Number}`, the default is `false` and types
 are required to opt-into the interface.
 
 ### `canonicalize` Definition
