@@ -6,7 +6,7 @@ SciMLStructures = "53ae85a6-f571-4167-b2af-e1d143709226"
 Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [sources]
-SciMLStructures = {path = "/home/chrisrackauckas/github-runners/deepsea3-20/_work/SciMLStructures.jl/SciMLStructures.jl"}
+SciMLStructures = {path = "/home/runner/work/SciMLStructures.jl/SciMLStructures.jl"}
 
 [compat]
 Documenter = "1"
