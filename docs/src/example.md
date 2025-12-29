@@ -107,7 +107,7 @@ function SS.replace!(::SS.Tunable, p::Parameters, newbuffer)
     for (subpar, val) in zip(p.subparams, newbuffer)
         subpar.p = val
     end
-    copyto!(coeffs, view(newbuffer, (length(p.subparams) + 1):length(newbuffer)))
+    copyto!(p.coeffs, view(newbuffer, (length(p.subparams) + 1):length(newbuffer)))
     return p
 end
 ```

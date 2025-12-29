@@ -41,8 +41,12 @@ are defined are:
     within other computations in order to avoid extra allocations.
   - Discrete: the discrete portions of the state captured inside of the structure. For example, discrete values
     stored outside of the `u` in the parameters to be modified in the callbacks of an ODE.
-    
+
       + Any parameter that is modified inside of callbacks should be considered Discrete.
+
+  - Input: the inputs portion of the SciMLStructure, representing external inputs to the system.
+  - Initials: the portion of the SciMLStructure used for parameters solely involved in initialization.
+    These should be floating point numbers supporting automatic differentiation.
 
 ## Definitions for Base Objects
 
