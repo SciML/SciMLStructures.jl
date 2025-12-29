@@ -1,5 +1,13 @@
 using SciMLStructures, Test, SafeTestsets
 
+const GROUP = get(ENV, "GROUP", "all")
+
 @testset "SciMLStructures" begin
-    @safetestset "Quality Assurance" include("qa.jl")
+    if GROUP == "all" || GROUP == "core"
+        @safetestset "Quality Assurance" include("qa.jl")
+    end
+
+    if GROUP == "all" || GROUP == "nopre"
+        @safetestset "Allocation Tests" include("alloc_tests.jl")
+    end
 end
