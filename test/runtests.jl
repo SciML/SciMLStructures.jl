@@ -1,6 +1,13 @@
+using Pkg
 using SciMLStructures, Test, SafeTestsets
 
 const GROUP = get(ENV, "GROUP", "all")
+
+function activate_alloccheck_env()
+    Pkg.activate("alloccheck")
+    Pkg.develop(PackageSpec(path = dirname(@__DIR__)))
+    Pkg.instantiate()
+end
 
 @testset "SciMLStructures" begin
     if GROUP == "all" || GROUP == "core"
@@ -8,6 +15,7 @@ const GROUP = get(ENV, "GROUP", "all")
     end
 
     if GROUP == "all" || GROUP == "nopre"
-        @safetestset "Allocation Tests" include("alloc_tests.jl")
+        activate_alloccheck_env()
+        @safetestset "Allocation Tests" include("alloccheck/alloc_tests.jl")
     end
 end
