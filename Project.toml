@@ -1,15 +1,17 @@
 name = "SciMLStructures"
 uuid = "53ae85a6-f571-4167-b2af-e1d143709226"
-authors = ["SciML"]
 version = "1.8.0"
+authors = ["SciML"]
 
 [deps]
 ArrayInterface = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
+PrecompileTools = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
 
 [compat]
 AllocCheck = "0.1, 0.2"
 Aqua = "0.8"
 ArrayInterface = "7.11"
+PrecompileTools = "1"
 SafeTestsets = "0.1"
 Test = "1.10"
 julia = "1.10"
