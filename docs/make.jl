@@ -7,18 +7,22 @@ pages = [
     "Home" => "index.md",
     "interface.md",
     "example.md",
-    "api.md"
+    "api.md",
 ]
 
 ENV["GKSwstype"] = "100"
 
-makedocs(modules = [SciMLStructures],
+makedocs(
+    modules = [SciMLStructures],
     sitename = "SciMLStructures.jl",
     clean = true,
     doctest = false,
     linkcheck = true,
-    format = Documenter.HTML(assets = ["assets/favicon.ico"],
-        canonical = "https://docs.sciml.ai/SciMLStructures/stable/"),
-    pages = pages)
+    format = Documenter.HTML(
+        assets = ["assets/favicon.ico"],
+        canonical = "https://docs.sciml.ai/SciMLStructures/stable/"
+    ),
+    pages = pages
+)
 
 deploydocs(repo = "github.com/SciML/SciMLStructures.jl"; push_preview = true)

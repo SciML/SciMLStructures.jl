@@ -6,7 +6,7 @@ const GROUP = get(ENV, "GROUP", "all")
 function activate_alloccheck_env()
     Pkg.activate("alloccheck")
     Pkg.develop(PackageSpec(path = dirname(@__DIR__)))
-    Pkg.instantiate()
+    return Pkg.instantiate()
 end
 
 @testset "SciMLStructures" begin

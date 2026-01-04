@@ -41,6 +41,7 @@ end
     @testset "replace type stability" begin
         @test_opt target_modules = (SciMLStructures,) replace(Tunable(), x, [4.0, 5.0, 6.0])
         @test_opt target_modules = (SciMLStructures,) replace(
-            Tunable(), mat, [5.0, 6.0, 7.0, 8.0])
+            Tunable(), mat, [5.0, 6.0, 7.0, 8.0]
+        )
     end
 end
