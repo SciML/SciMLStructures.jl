@@ -1,5 +1,5 @@
 using SciMLStructures, JET, Test
-using SciMLStructures: Tunable, Constants, Caches, Discrete, Initials,
+using SciMLStructures: Tunable, Constants, Caches, Discrete, Initials, Input,
     canonicalize, hasportion, isscimlstructure, replace
 
 @testset "JET static analysis" begin
@@ -12,6 +12,7 @@ using SciMLStructures: Tunable, Constants, Caches, Discrete, Initials,
         @test_opt target_modules = (SciMLStructures,) hasportion(Caches(), x)
         @test_opt target_modules = (SciMLStructures,) hasportion(Discrete(), x)
         @test_opt target_modules = (SciMLStructures,) hasportion(Initials(), x)
+        @test_opt target_modules = (SciMLStructures,) hasportion(Input(), x)
     end
 
     @testset "isscimlstructure type stability" begin
@@ -24,6 +25,8 @@ using SciMLStructures: Tunable, Constants, Caches, Discrete, Initials,
         @test_opt target_modules = (SciMLStructures,) canonicalize(Constants(), x)
         @test_opt target_modules = (SciMLStructures,) canonicalize(Caches(), x)
         @test_opt target_modules = (SciMLStructures,) canonicalize(Discrete(), x)
+        @test_opt target_modules = (SciMLStructures,) canonicalize(Initials(), x)
+        @test_opt target_modules = (SciMLStructures,) canonicalize(Input(), x)
         @test_opt target_modules = (SciMLStructures,) canonicalize(Tunable(), mat)
     end
 
