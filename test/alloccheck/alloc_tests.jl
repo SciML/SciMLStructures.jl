@@ -13,12 +13,14 @@ using Test
         @check_allocs check_hasportion_caches(a) = hasportion(Caches(), a)
         @check_allocs check_hasportion_discrete(a) = hasportion(Discrete(), a)
         @check_allocs check_hasportion_initials(a) = hasportion(Initials(), a)
+        @check_allocs check_hasportion_input(a) = hasportion(Input(), a)
 
         @test check_hasportion_tunable(arr) == true
         @test check_hasportion_constants(arr) == false
         @test check_hasportion_caches(arr) == false
         @test check_hasportion_discrete(arr) == false
         @test check_hasportion_initials(arr) == false
+        @test check_hasportion_input(arr) == false
     end
 
     @testset "isscimlstructure checks" begin
@@ -52,9 +54,13 @@ using Test
         @check_allocs check_canon_constants(a::Vector{Float64}) = canonicalize(Constants(), a)
         @check_allocs check_canon_caches(a::Vector{Float64}) = canonicalize(Caches(), a)
         @check_allocs check_canon_discrete(a::Vector{Float64}) = canonicalize(Discrete(), a)
+        @check_allocs check_canon_initials(a::Vector{Float64}) = canonicalize(Initials(), a)
+        @check_allocs check_canon_input(a::Vector{Float64}) = canonicalize(Input(), a)
 
         @test check_canon_constants(arr) == (nothing, nothing, nothing)
         @test check_canon_caches(arr) == (nothing, nothing, nothing)
         @test check_canon_discrete(arr) == (nothing, nothing, nothing)
+        @test check_canon_initials(arr) == (nothing, nothing, nothing)
+        @test check_canon_input(arr) == (nothing, nothing, nothing)
     end
 end
