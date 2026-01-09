@@ -9,12 +9,21 @@ function activate_alloccheck_env()
     return Pkg.instantiate()
 end
 
+function activate_jet_env()
+    Pkg.activate("jet")
+    Pkg.develop(PackageSpec(path = dirname(@__DIR__)))
+    return Pkg.instantiate()
+end
+
 @testset "SciMLStructures" begin
     if GROUP == "all" || GROUP == "core"
         @safetestset "Quality Assurance" include("qa.jl")
     end
 
     if GROUP == "all" || GROUP == "nopre"
+        activate_jet_env()
+        @safetestset "JET Tests" include("jet/jet_tests.jl")
+
         activate_alloccheck_env()
         @safetestset "Allocation Tests" include("alloccheck/alloc_tests.jl")
     end
