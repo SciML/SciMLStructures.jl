@@ -1447,7 +1447,7 @@ version = "7.91.0"
 
 [[deps.SciMLStructures]]
 deps = ["ArrayInterface", "PrecompileTools"]
-path = "/home/runner/work/SciMLStructures.jl/SciMLStructures.jl"
+path = "/home/chrisrackauckas/github-runners/deepsea3-22/_work/SciMLStructures.jl/SciMLStructures.jl"
 uuid = "53ae85a6-f571-4167-b2af-e1d143709226"
 version = "1.10.0"
 
