@@ -3,6 +3,7 @@ hasportion(::Constants, ::AbstractArray) = false
 hasportion(::Caches, ::AbstractArray) = false
 hasportion(::Discrete, ::AbstractArray) = false
 hasportion(::Initials, ::AbstractArray) = false
+hasportion(::Input, ::AbstractArray) = false
 
 struct ArrayRepack{T}
     x::T
@@ -20,6 +21,8 @@ canonicalize(::Tunable, p::AbstractArray) = vec(p), ArrayRepack(p), true
 canonicalize(::Constants, p::AbstractArray) = nothing, nothing, nothing
 canonicalize(::Caches, p::AbstractArray) = nothing, nothing, nothing
 canonicalize(::Discrete, p::AbstractArray) = nothing, nothing, nothing
+canonicalize(::Initials, p::AbstractArray) = nothing, nothing, nothing
+canonicalize(::Input, p::AbstractArray) = nothing, nothing, nothing
 
 isscimlstructure(::AbstractArray) = false
 isscimlstructure(::AbstractArray{<:Number}) = true
