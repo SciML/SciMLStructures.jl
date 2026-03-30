@@ -11,9 +11,9 @@ Build Info:
   Official https://julialang.org release
 Platform Info:
   OS: Linux (x86_64-linux-gnu)
-  CPU: 4 × AMD EPYC 9V74 80-Core Processor
+  CPU: 4 × AMD EPYC 7763 64-Core Processor
   WORD_SIZE: 64
-  LLVM: libLLVM-18.1.7 (ORCJIT, znver4)
+  LLVM: libLLVM-18.1.7 (ORCJIT, znver3)
   GC: Built with stock GC
 Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></details><details><summary>A more complete overview of all dependencies and their versions is also provided.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Status `~/work/SciMLStructures.jl/SciMLStructures.jl/docs/Manifest.toml`
   [47edcb42] ADTypes v1.21.0
@@ -43,9 +43,9 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [187b0558] ConstructionBase v1.6.0
   [adafc99b] CpuId v0.3.1
   [9a962f9c] DataAPI v1.16.0
-  [864edb3b] DataStructures v0.19.3
+  [864edb3b] DataStructures v0.19.4
   [e2d170a0] DataValueInterfaces v1.0.0
-  [2b5f629d] DiffEqBase v6.211.0
+  [2b5f629d] DiffEqBase v6.212.0
   [459566f4] DiffEqCallbacks v4.12.0
   [77a26b50] DiffEqNoiseProcess v5.27.0
   [163ba53b] DiffResults v1.1.0
@@ -55,8 +55,8 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [ffbed154] DocStringExtensions v0.9.5
   [e30172f5] Documenter v1.17.0
   [4e289a0a] EnumX v1.0.7
-  [7da242da] Enzyme v0.13.134
-  [f151be2c] EnzymeCore v0.8.18
+  [7da242da] Enzyme v0.13.136
+  [f151be2c] EnzymeCore v0.8.19
   [e2ba6199] ExprTools v0.1.10
   [55351af7] ExproniconLite v0.10.14
   [7034ab61] FastBroadcast v0.3.5
@@ -67,10 +67,10 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [f6369f11] ForwardDiff v1.3.3
   [f62d2435] FunctionProperties v0.1.2
   [069b7b12] FunctionWrappers v1.1.3
-  [77dc65aa] FunctionWrappersWrappers v0.1.3
+⌅ [77dc65aa] FunctionWrappersWrappers v0.1.3
   [d9f16b24] Functors v0.5.2
   [46192b85] GPUArraysCore v0.2.0
-  [61eb1bfa] GPUCompiler v1.8.2
+  [61eb1bfa] GPUCompiler v1.9.1
   [d7ba0133] Git v1.5.0
   [076d061b] HashArrayMappedTries v0.2.0
   [34004b35] HypergeometricFunctions v0.3.28
@@ -88,7 +88,7 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [929cbde3] LLVM v9.4.6
   [10f19ff3] LayoutPointers v0.1.17
   [0e77f7df] LazilyInitializedFields v1.3.0
-  [7ed4a6bd] LinearSolve v3.68.0
+  [7ed4a6bd] LinearSolve v3.69.0
   [2ab3a3ac] LogExpFunctions v0.3.29
   [e6f89c97] LoggingExtras v1.2.0
   [1914dd2f] MacroTools v0.5.16
@@ -100,11 +100,11 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [46d2c3a1] MuladdMacro v0.2.4
   [872c559c] NNlib v0.9.33
   [77ba4419] NaNMath v1.1.3
-  [be0214bd] NonlinearSolveBase v2.17.0
+  [be0214bd] NonlinearSolveBase v2.19.0
   [d8793406] ObjectFile v0.5.0
   [3bd65402] Optimisers v0.4.7
   [bac558e1] OrderedCollections v1.8.1
-  [bbf590c4] OrdinaryDiffEqCore v3.23.0
+  [bbf590c4] OrdinaryDiffEqCore v3.24.0
   [b1df2697] OrdinaryDiffEqTsit5 v1.10.0
   [90014a1f] PDMats v0.11.37
   [69de0a69] Parsers v2.8.3
@@ -119,7 +119,7 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [e6cf234a] RandomNumbers v1.6.0
   [c1ae055f] RealDot v0.1.0
   [3cdcf5f2] RecipesBase v1.3.4
-  [731186ca] RecursiveArrayTools v3.48.0
+  [731186ca] RecursiveArrayTools v3.49.0
   [189a3867] Reexport v1.2.2
   [2792f1a3] RegistryInstances v0.1.0
   [ae029012] Requires v1.3.1
@@ -128,7 +128,7 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [79098fc4] Rmath v0.9.0
   [7e49a35a] RuntimeGeneratedFunctions v0.5.17
   [94e857df] SIMDTypes v0.1.0
-  [0bca4576] SciMLBase v2.152.1
+⌃ [0bca4576] SciMLBase v2.153.1
   [19f34311] SciMLJacobianOperators v0.1.12
   [a6db7da4] SciMLLogging v1.9.1
   [c0aeaf25] SciMLOperators v1.15.1
@@ -140,7 +140,7 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [efcf1570] Setfield v1.1.2
   [a2af1166] SortingAlgorithms v1.2.2
   [dc90abb0] SparseInverseSubset v0.1.2
-  [276daf66] SpecialFunctions v2.7.1
+  [276daf66] SpecialFunctions v2.7.2
   [aedffcd0] Static v1.3.1
   [0d7ed370] StaticArrayInterface v1.9.0
   [90137ffa] StaticArrays v1.9.18
@@ -224,4 +224,5 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   [83775a58] Zlib_jll v1.3.1+2
   [8e850b90] libblastrampoline_jll v5.15.0+0
   [8e850ede] nghttp2_jll v1.64.0+1
-  [3f19e933] p7zip_jll v17.7.0+0</code></pre></details><p>You can also download the <a href="https://github.com/SciML/SciMLStructures.jl/tree/gh-pages/v1.10.0/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/SciMLStructures.jl/tree/gh-pages/v1.10.0/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="interface/">The SciMLStructure Interface »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 26 March 2026 21:53">Thursday 26 March 2026</span>. Using Julia version 1.12.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  [3f19e933] p7zip_jll v17.7.0+0
+Info Packages marked with ⌃ and ⌅ have new versions available. Those with ⌃ may be upgradable, but those with ⌅ are restricted by compatibility constraints from upgrading. To see why use `status --outdated -m`</code></pre></details><p>You can also download the <a href="https://github.com/SciML/SciMLStructures.jl/tree/gh-pages/v1.10.0/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/SciMLStructures.jl/tree/gh-pages/v1.10.0/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="interface/">The SciMLStructure Interface »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Monday 30 March 2026 20:59">Monday 30 March 2026</span>. Using Julia version 1.12.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
