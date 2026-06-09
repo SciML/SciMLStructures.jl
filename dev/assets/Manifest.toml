@@ -444,9 +444,9 @@ version = "1.0.7"
 
 [[deps.Enzyme]]
 deps = ["CEnum", "EnzymeCore", "Enzyme_jll", "GPUCompiler", "InteractiveUtils", "LLVM", "Libdl", "LinearAlgebra", "ObjectFile", "PrecompileTools", "Preferences", "Printf", "Random", "SparseArrays"]
-git-tree-sha1 = "4132dbd210acd1d13c9a751c5f0ef6b443f5804d"
+git-tree-sha1 = "706a1412d9823816ee62cca42e2193c21c3fcdde"
 uuid = "7da242da-08ed-463a-9acd-ee780be4f1d9"
-version = "0.13.153"
+version = "0.13.154"
 
     [deps.Enzyme.extensions]
     EnzymeBFloat16sExt = "BFloat16s"
@@ -477,9 +477,9 @@ weakdeps = ["Adapt", "ChainRulesCore"]
 
 [[deps.Enzyme_jll]]
 deps = ["Artifacts", "JLLWrappers", "LazyArtifacts", "Libdl", "TOML"]
-git-tree-sha1 = "08f3e8d675fb14e361d6e7174bfe229af150d580"
+git-tree-sha1 = "f593504cf82a80c38986e6f68b29223d02c01e97"
 uuid = "7cc45869-7501-5eee-bdea-0790c847d4ef"
-version = "0.0.263+0"
+version = "0.0.265+0"
 
 [[deps.Expat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -624,9 +624,9 @@ version = "0.2.0"
 
 [[deps.GPUCompiler]]
 deps = ["ExprTools", "InteractiveUtils", "LLVM", "Libdl", "Logging", "PrecompileTools", "Preferences", "Scratch", "Serialization", "TOML", "Tracy", "UUIDs"]
-git-tree-sha1 = "d5701406ed03a589423ffb2ca1923e2a42eeed51"
+git-tree-sha1 = "978466d90eaaef095edd5eff7f9ab5b969ad293d"
 uuid = "61eb1bfa-7361-4325-ad38-22787b887f55"
-version = "1.19.0"
+version = "1.19.1"
 
     [deps.GPUCompiler.weakdeps]
     LLVMDowngrader_jll = "f52de702-fb25-5922-94ba-81dd59b07444"
@@ -832,9 +832,9 @@ version = "1.12.0"
 
 [[deps.LinearSolve]]
 deps = ["AMD", "ArrayInterface", "ConcreteStructs", "DocStringExtensions", "EnumX", "GPUArraysCore", "InteractiveUtils", "Krylov", "Libdl", "LinearAlgebra", "MKL_jll", "Markdown", "OpenBLAS_jll", "PrecompileTools", "Preferences", "PureKLU", "RecursiveArrayTools", "Reexport", "SciMLBase", "SciMLLogging", "SciMLOperators", "Setfield", "SparseColumnPivotedQR", "StaticArraysCore"]
-git-tree-sha1 = "7ffd2f0b385845507700eba89ea34dd03614f1b0"
+git-tree-sha1 = "70de717540ffc613424866635b99d0c187cf7b59"
 uuid = "7ed4a6bd-45f5-4d41-b270-4a48e9bafcae"
-version = "3.85.0"
+version = "3.85.1"
 
     [deps.LinearSolve.extensions]
     LinearSolveAMDGPUExt = "AMDGPU"
@@ -1537,9 +1537,9 @@ version = "0.34.11"
 
 [[deps.StatsFuns]]
 deps = ["HypergeometricFunctions", "IrrationalConstants", "LogExpFunctions", "Reexport", "Rmath", "SpecialFunctions"]
-git-tree-sha1 = "64a7f03e6bbcc23ee1c2567a9e6eb4e0d83d0285"
+git-tree-sha1 = "3f4e1d24289cd974e089c617b1472311a2b1feab"
 uuid = "4c63d2b9-4356-54db-8cca-17b64c39e42c"
-version = "2.0.1"
+version = "2.1.0"
 weakdeps = ["ChainRulesCore", "InverseFunctions"]
 
     [deps.StatsFuns.extensions]
