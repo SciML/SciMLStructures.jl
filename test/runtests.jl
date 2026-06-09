@@ -1,30 +1,20 @@
 using Pkg
-using SciMLStructures, Test, SafeTestsets
+using SafeTestsets, Test
 
-const GROUP = get(ENV, "GROUP", "all")
-
-function activate_alloccheck_env()
-    Pkg.activate("alloccheck")
-    Pkg.develop(PackageSpec(path = dirname(@__DIR__)))
-    return Pkg.instantiate()
-end
-
-function activate_jet_env()
-    Pkg.activate("jet")
-    Pkg.develop(PackageSpec(path = dirname(@__DIR__)))
-    return Pkg.instantiate()
-end
+const GROUP = get(ENV, "GROUP", "All")
 
 @testset "SciMLStructures" begin
-    if GROUP == "all" || GROUP == "core"
-        @safetestset "Quality Assurance" include("qa.jl")
+    if GROUP == "All" || GROUP == "Core"
+        Pkg.activate("alloccheck")
+        Pkg.develop(PackageSpec(path = dirname(@__DIR__)))
+        Pkg.instantiate()
+        @safetestset "Allocation Tests" include("alloccheck/alloc_tests.jl")
     end
 
-    if GROUP == "all" || GROUP == "nopre"
-        activate_jet_env()
-        @safetestset "JET Tests" include("jet/jet_tests.jl")
-
-        activate_alloccheck_env()
-        @safetestset "Allocation Tests" include("alloccheck/alloc_tests.jl")
+    if GROUP == "All" || GROUP == "QA"
+        Pkg.activate("qa")
+        Pkg.develop(PackageSpec(path = dirname(@__DIR__)))
+        Pkg.instantiate()
+        @safetestset "Quality Assurance" include("qa/qa.jl")
     end
 end
