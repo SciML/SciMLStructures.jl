@@ -1,6 +1,17 @@
-using SciMLStructures, JET, Test
+using SciMLStructures, Aqua, JET, Test
 using SciMLStructures: Tunable, Constants, Caches, Discrete, Initials, Input,
     canonicalize, hasportion, isscimlstructure, replace
+
+@testset "Aqua" begin
+    Aqua.find_persistent_tasks_deps(SciMLStructures)
+    Aqua.test_ambiguities(SciMLStructures, recursive = false)
+    Aqua.test_deps_compat(SciMLStructures)
+    Aqua.test_piracies(SciMLStructures)
+    Aqua.test_project_extras(SciMLStructures)
+    Aqua.test_stale_deps(SciMLStructures)
+    Aqua.test_unbound_args(SciMLStructures)
+    Aqua.test_undefined_exports(SciMLStructures)
+end
 
 @testset "JET static analysis" begin
     x = [1.0, 2.0, 3.0]
