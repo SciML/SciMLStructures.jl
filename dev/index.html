@@ -5,15 +5,15 @@ Pkg.add(&quot;SciMLStructures&quot;)</code></pre><h2 id="Contributing"><a class=
   <span class="sgr90">[b1df2697] </span>OrdinaryDiffEqTsit5 v2.0.1
   <span class="sgr90">[1ed8b502] </span>SciMLSensitivity v7.112.0
   <span class="sgr90">[53ae85a6] </span>SciMLStructures v1.10.0 `~/work/SciMLStructures.jl/SciMLStructures.jl`
-  <span class="sgr90">[e88e6eb3] </span>Zygote v0.7.10</code></pre></details><details><summary>and using this machine and Julia version.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Julia Version 1.12.6
+  <span class="sgr90">[e88e6eb3] </span>Zygote v0.7.11</code></pre></details><details><summary>and using this machine and Julia version.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Julia Version 1.12.6
 Commit 15346901f00 (2026-04-09 19:20 UTC)
 Build Info:
   Official https://julialang.org release
 Platform Info:
   OS: Linux (x86_64-linux-gnu)
-  CPU: 4 × Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz
+  CPU: 4 × AMD EPYC 9V74 80-Core Processor
   WORD_SIZE: 64
-  LLVM: libLLVM-18.1.7 (ORCJIT, icelake-server)
+  LLVM: libLLVM-18.1.7 (ORCJIT, znver4)
   GC: Built with stock GC
 Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></details><details><summary>A more complete overview of all dependencies and their versions is also provided.</summary><pre class="documenter-example-output"><code class="nohighlight hljs ansi"><span class="sgr32"><span class="sgr1">Status</span></span> `~/work/SciMLStructures.jl/SciMLStructures.jl/docs/Manifest.toml`
   <span class="sgr90">[47edcb42] </span>ADTypes v1.22.0
@@ -46,11 +46,11 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   <span class="sgr90">[163ba53b] </span>DiffResults v1.1.0
   <span class="sgr90">[b552c78f] </span>DiffRules v1.16.0
   <span class="sgr90">[a0c0ee7d] </span>DifferentiationInterface v0.7.18
-  <span class="sgr90">[31c24e10] </span>Distributions v0.25.126
+  <span class="sgr90">[31c24e10] </span>Distributions v0.25.127
   <span class="sgr90">[ffbed154] </span>DocStringExtensions v0.9.5
   <span class="sgr90">[e30172f5] </span>Documenter v1.17.0
   <span class="sgr90">[4e289a0a] </span>EnumX v1.0.7
-  <span class="sgr90">[7da242da] </span>Enzyme v0.13.157
+  <span class="sgr90">[7da242da] </span>Enzyme v0.13.162
   <span class="sgr90">[f151be2c] </span>EnzymeCore v0.8.20
   <span class="sgr90">[e2ba6199] </span>ExprTools v0.1.10
   <span class="sgr90">[7034ab61] </span>FastBroadcast v1.3.2
@@ -64,12 +64,12 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   <span class="sgr90">[77dc65aa] </span>FunctionWrappersWrappers v1.9.1
   <span class="sgr90">[d9f16b24] </span>Functors v0.5.2
   <span class="sgr90">[46192b85] </span>GPUArraysCore v0.2.0
-  <span class="sgr90">[61eb1bfa] </span>GPUCompiler v1.21.0
+  <span class="sgr90">[61eb1bfa] </span>GPUCompiler v1.22.1
   <span class="sgr90">[d7ba0133] </span>Git v1.5.0
   <span class="sgr90">[076d061b] </span>HashArrayMappedTries v0.2.0
   <span class="sgr90">[34004b35] </span>HypergeometricFunctions v0.3.28
   <span class="sgr90">[b5f81e59] </span>IOCapture v1.0.0
-  <span class="sgr90">[7869d1d1] </span>IRTools v0.4.15
+  <span class="sgr90">[7869d1d1] </span>IRTools v0.4.17
   <span class="sgr90">[8197267c] </span>IntervalSets v0.7.14
   <span class="sgr90">[3587e190] </span>InverseFunctions v0.1.17
   <span class="sgr90">[92d709cd] </span>IrrationalConstants v0.2.6
@@ -80,7 +80,7 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   <span class="sgr90">[ba0b0d4f] </span>Krylov v0.10.6
   <span class="sgr90">[929cbde3] </span>LLVM v9.9.0
   <span class="sgr90">[0e77f7df] </span>LazilyInitializedFields v1.3.0
-  <span class="sgr90">[7ed4a6bd] </span>LinearSolve v3.85.1
+  <span class="sgr90">[7ed4a6bd] </span>LinearSolve v3.86.0
 <span class="sgr33">⌅</span> <span class="sgr90">[2ab3a3ac] </span>LogExpFunctions v0.3.29
   <span class="sgr90">[e6f89c97] </span>LoggingExtras v1.2.0
   <span class="sgr90">[1914dd2f] </span>MacroTools v0.5.16
@@ -97,7 +97,7 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   <span class="sgr90">[bbf590c4] </span>OrdinaryDiffEqCore v4.3.0
   <span class="sgr90">[b1df2697] </span>OrdinaryDiffEqTsit5 v2.0.1
   <span class="sgr90">[90014a1f] </span>PDMats v0.11.37
-  <span class="sgr90">[69de0a69] </span>Parsers v2.8.5
+  <span class="sgr90">[69de0a69] </span>Parsers v2.8.6
   <span class="sgr90">[e409e4f3] </span>PoissonRandom v0.4.9
   <span class="sgr90">[d236fae5] </span>PreallocationTools v1.2.0
   <span class="sgr90">[aea7be01] </span>PrecompileTools v1.3.4
@@ -134,8 +134,8 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   <span class="sgr90">[1e83bf80] </span>StaticArraysCore v1.4.4
   <span class="sgr90">[10745b16] </span>Statistics v1.11.1
   <span class="sgr90">[82ae8749] </span>StatsAPI v1.8.0
-  <span class="sgr90">[2913bbd2] </span>StatsBase v0.34.11
-  <span class="sgr90">[4c63d2b9] </span>StatsFuns v2.1.0
+  <span class="sgr90">[2913bbd2] </span>StatsBase v0.34.12
+  <span class="sgr90">[4c63d2b9] </span>StatsFuns v2.2.0
   <span class="sgr90">[09ab397b] </span>StructArrays v0.7.3
   <span class="sgr90">[53d494c1] </span>StructIO v0.3.1
   <span class="sgr90">[ec057cc2] </span>StructUtils v2.8.2
@@ -148,9 +148,9 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   <span class="sgr90">[3bb67fe8] </span>TranscodingStreams v0.11.3
   <span class="sgr90">[781d530d] </span>TruncatedStacktraces v1.4.0
   <span class="sgr90">[013be700] </span>UnsafeAtomics v0.3.1
-  <span class="sgr90">[e88e6eb3] </span>Zygote v0.7.10
+  <span class="sgr90">[e88e6eb3] </span>Zygote v0.7.11
   <span class="sgr90">[700de1a5] </span>ZygoteRules v0.2.7
-  <span class="sgr90">[7cc45869] </span>Enzyme_jll v0.0.266+0
+  <span class="sgr90">[7cc45869] </span>Enzyme_jll v0.0.269+0
   <span class="sgr90">[2e619515] </span>Expat_jll v2.8.1+0
   <span class="sgr90">[020c3dae] </span>Git_LFS_jll v3.7.1+0
   <span class="sgr90">[f8c6e375] </span>Git_jll v2.54.0+0
@@ -210,4 +210,4 @@ Threads: 1 default, 1 interactive, 1 GC (on 4 virtual cores)</code></pre></detai
   <span class="sgr90">[8e850b90] </span>libblastrampoline_jll v5.15.0+0
   <span class="sgr90">[8e850ede] </span>nghttp2_jll v1.64.0+1
   <span class="sgr90">[3f19e933] </span>p7zip_jll v17.7.0+0
-<span class="sgr36"><span class="sgr1">Info</span></span> Packages marked with <span class="sgr33">⌅</span> have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated -m`</code></pre></details><p>You can also download the <a href="https://github.com/SciML/SciMLStructures.jl/tree/gh-pages/v1.10.0/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/SciMLStructures.jl/tree/gh-pages/v1.10.0/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="interface/">The SciMLStructure Interface »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Monday 15 June 2026 00:17">Monday 15 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+<span class="sgr36"><span class="sgr1">Info</span></span> Packages marked with <span class="sgr33">⌅</span> have new versions available but compatibility constraints restrict them from upgrading. To see why use `status --outdated -m`</code></pre></details><p>You can also download the <a href="https://github.com/SciML/SciMLStructures.jl/tree/gh-pages/v1.10.0/assets/Manifest.toml">manifest</a> file and the <a href="https://github.com/SciML/SciMLStructures.jl/tree/gh-pages/v1.10.0/assets/Project.toml">project</a> file.</p></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="interface/">The SciMLStructure Interface »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Thursday 18 June 2026 22:27">Thursday 18 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
