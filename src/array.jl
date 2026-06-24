@@ -27,8 +27,6 @@ canonicalize(::Input, p::AbstractArray) = nothing, nothing, nothing
 isscimlstructure(::AbstractArray) = false
 isscimlstructure(::AbstractArray{<:Number}) = true
 
-function SciMLStructures.replace(
-        ::SciMLStructures.Tunable, arr::AbstractArray, new_arr::AbstractArray
-    )
+function replace(::Tunable, arr::AbstractArray, new_arr::AbstractArray)
     return restructure(arr, new_arr)
 end

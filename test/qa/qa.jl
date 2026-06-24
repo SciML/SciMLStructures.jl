@@ -1,17 +1,22 @@
-using SciMLStructures, Aqua, JET, Test
+using SciMLStructures, JET, SciMLTesting, Test
 using SciMLStructures: Tunable, Constants, Caches, Discrete, Initials, Input,
     canonicalize, hasportion, isscimlstructure, replace
 
-@testset "Aqua" begin
-    Aqua.find_persistent_tasks_deps(SciMLStructures)
-    Aqua.test_ambiguities(SciMLStructures, recursive = false)
-    Aqua.test_deps_compat(SciMLStructures)
-    Aqua.test_piracies(SciMLStructures)
-    Aqua.test_project_extras(SciMLStructures)
-    Aqua.test_stale_deps(SciMLStructures)
-    Aqua.test_unbound_args(SciMLStructures)
-    Aqua.test_undefined_exports(SciMLStructures)
-end
+run_qa(
+    SciMLStructures;
+    explicit_imports = true,
+    # JET is exercised below as targeted `@test_opt` type-stability checks, not
+    # `JET.test_package`; `using JET` would otherwise auto-enable the latter.
+    jet = false,
+    # `restructure` and `has_trivial_array_constructor` are part of
+    # ArrayInterface's documented API but it has not adopted the `public`
+    # keyword, so the public-import check cannot see them as public.
+    ei_kwargs = (;
+        all_explicit_imports_are_public = (;
+            ignore = (:has_trivial_array_constructor, :restructure),
+        ),
+    ),
+)
 
 @testset "JET static analysis" begin
     x = [1.0, 2.0, 3.0]
