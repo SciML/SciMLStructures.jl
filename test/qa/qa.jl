@@ -8,14 +8,6 @@ run_qa(
     # JET is exercised below as targeted `@test_opt` type-stability checks, not
     # `JET.test_package`; `using JET` would otherwise auto-enable the latter.
     jet = false,
-    # `restructure` and `has_trivial_array_constructor` are part of
-    # ArrayInterface's documented API but it has not adopted the `public`
-    # keyword, so the public-import check cannot see them as public.
-    ei_kwargs = (;
-        all_explicit_imports_are_public = (;
-            ignore = (:has_trivial_array_constructor, :restructure),
-        ),
-    ),
 )
 
 @testset "JET static analysis" begin
