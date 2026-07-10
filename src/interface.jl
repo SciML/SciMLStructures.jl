@@ -1,13 +1,20 @@
 """
-Returns whether the object satisfies the SciMLStructure interface. Defaults to `false` and types
-are required to opt-into the interface.
+    isscimlstructure(p)::Bool
+
+Return whether `p` satisfies the SciMLStructures interface.
+
+The default is `false`; types opt in by defining `isscimlstructure(::MyType) = true`.
+`AbstractArray{<:Number}` is treated as a SciMLStructure by built-in methods.
 """
 isscimlstructure(p) = false
 
 """
-Returns whether the SciMLStructure object is mutable and thus compatible with the interface
-functions that require mutation. Note that this is not mutable in the sense of the Julia
-type, rather mutable in the sense of `AbstractPortion` replacement, i.e. `replace!`
+    ismutablescimlstructure(p)::Bool
+
+Return whether `p` supports the mutating SciMLStructures interface.
+
+This is not mutability in the sense of the Julia type. It means the structure supports
+in-place `AbstractPortion` replacement through [`replace!`](@ref).
 """
 function ismutablescimlstructure end
 
@@ -71,23 +78,31 @@ SciMLStructure. For more information on the arguments, see canonicalize.
 function replace! end
 
 """
-An AbstractPortion object to be used in the SciMLStructures.jl interfaces, i.e.
+    AbstractPortion
+
+An abstract portion tag used in the SciMLStructures.jl interfaces, i.e.
 `canonicalize(::AbstractPortion, p::T1)` or `replace!(::AbstractPortion, p::T1)`.
 """
 abstract type AbstractPortion end
 
 """
+    Tunable()
+
 The tunable portion of the SciMLStructure, i.e. the parameters which are meant to be optimized.
 """
 struct Tunable <: AbstractPortion end
 
 """
+    Constants()
+
 The constant portion of the SciMLStructure, i.e. the parameters which are meant to be
 constant with respect to optimization.
 """
 struct Constants <: AbstractPortion end
 
 """
+    Caches()
+
 The caches portion of the SciMLStructure, i.e. the caches which are meant to allow for
 writing the model function without allocations.
 
@@ -95,7 +110,7 @@ Rules for caches:
 
   - Caches should be a mutable object.
   - Caches should not assume any previous value in them. All values within the cache should be
-    written into in the `f` cal that it is used from.
+    written into in the `f` call that they are used from.
 
 For making caches compatible with automatic differentiation, see
 [PreallocationTools.jl](https://docs.sciml.ai/PreallocationTools/stable/).
@@ -103,16 +118,22 @@ For making caches compatible with automatic differentiation, see
 struct Caches <: AbstractPortion end
 
 """
+    Discrete()
+
 The discrete portion of the SciMLStructure.
 """
 struct Discrete <: AbstractPortion end
 
 """
+    Input()
+
 The inputs portion of the SciMLStructure.
 """
 struct Input <: AbstractPortion end
 
 """
+    Initials()
+
 The portion of the SciMLStructure used for parameters solely involved in initialization.
 These should be floating point numbers supporting automatic differentiation.
 """

@@ -1,3 +1,12 @@
+"""
+    SciMLStructures
+
+Interfaces for exposing structured non-state values to SciML solvers and tools.
+
+SciMLStructures defines portion tags such as [`Tunable`](@ref) and [`Constants`](@ref),
+along with [`canonicalize`](@ref), [`replace`](@ref), and [`replace!`](@ref)
+interfaces that custom parameter containers can implement.
+"""
 module SciMLStructures
 
 using ArrayInterface: has_trivial_array_constructor, restructure
