@@ -1,4 +1,4 @@
-using PrecompileTools: @setup_workload, @compile_workload
+import PrecompileTools: @setup_workload, @compile_workload
 
 @setup_workload begin
     # Minimal setup - avoid heavy dependencies
