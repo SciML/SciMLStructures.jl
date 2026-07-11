@@ -6,10 +6,6 @@ SciMLStructures = "53ae85a6-f571-4167-b2af-e1d143709226"
 SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
-[sources]
-SciMLStructures = {path = "../.."}
-SciMLTesting = {rev = "a5cecca928f2c684c23505c3cd83921d71753e2e", url = "https://github.com/SciML/SciMLTesting.jl"}
-
 [compat]
 Aqua = "0.8"
 JET = "0.9, 0.10, 0.11"
