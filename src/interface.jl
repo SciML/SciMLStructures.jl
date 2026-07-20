@@ -1,38 +1,91 @@
 """
     isscimlstructure(p)::Bool
 
-Return whether `p` satisfies the SciMLStructures interface.
+Return whether `p` implements the SciMLStructures interface.
 
-The default is `false`; types opt in by defining `isscimlstructure(::MyType) = true`.
-`AbstractArray{<:Number}` is treated as a SciMLStructure by built-in methods.
+# Arguments
+
+  - `p`: The value to classify.
+
+# Interface
+
+The fallback returns `false`. A custom container opts in by defining
+`isscimlstructure(::MyType) = true`, then implementing the portion methods it supports.
+`AbstractArray{<:Number}` opts in through built-in methods.
+
+# Examples
+
+```jldoctest
+julia> using SciMLStructures
+
+julia> SciMLStructures.isscimlstructure([1.0, 2.0])
+true
+```
 """
 isscimlstructure(p) = false
 
 """
     ismutablescimlstructure(p)::Bool
 
-Return whether `p` supports the mutating SciMLStructures interface.
+Return whether `p` supports in-place replacement for its implemented portions.
 
-This is not mutability in the sense of the Julia type. It means the structure supports
-in-place `AbstractPortion` replacement through [`replace!`](@ref).
+# Arguments
+
+  - `p`: A SciML structure value.
+
+# Interface
+
+Define `ismutablescimlstructure(::MyType) = true` only when
+[`replace!`](@ref) is implemented for every portion reported by [`hasportion`](@ref).
+This trait describes the SciMLStructures replacement contract, rather than merely
+whether the Julia type is mutable.
 """
 function ismutablescimlstructure end
 
 """
     hasportion(::AbstractPortion, p)::Bool
 
-Denotes whether a portion is used in a given definition of a SciMLStructure. If `false`,
-then it's expected that the canonical values are `nothing`.
+Return whether `p` contains the requested SciML structure `portion`.
+
+# Arguments
+
+  - `portion`: A tag such as [`Tunable`](@ref), [`Constants`](@ref), or [`Caches`](@ref).
+  - `p`: A SciML structure value.
+
+# Interface
+
+Implement this for every supported `AbstractPortion` and return `false` for absent
+portions. An absent portion must have `canonicalize(portion, p) == (nothing, nothing,
+nothing)`.
 """
 function hasportion end
 
 """
     canonicalize(::AbstractPortion, p::T1) -> values::T2, repack, aliases::Bool
 
-The core function of the interface is the `canonicalize` function. `canonicalize` allows the user to define
-to the solver how to represent the given "portion" in a standard `AbstractVector` type which allows for
-interfacing with standard tools like linear algebra in an efficient manner. The type of portions which
-are defined are:
+Convert one `portion` of `p` to its canonical vector representation.
+
+# Arguments
+
+  - `portion`: The requested [`AbstractPortion`](@ref).
+  - `p`: A SciML structure value.
+
+# Returns
+
+A three-tuple `(values, repack, aliases)`:
+
+  - `values`: The canonical vector representation, or `nothing` when the portion is absent.
+  - `repack`: A callable accepting values in the same ordering and returning a new value
+    of `typeof(p)`, or `nothing` when the portion is absent.
+  - `aliases`: Whether mutating `values` may mutate `p`, or `nothing` when the portion
+    is absent.
+
+# Interface
+
+Implement this for each portion where [`hasportion`](@ref) returns `true`. `values` must
+be an `AbstractVector`; flatten multidimensional values in a stable ordering. `repack`
+and [`replace`](@ref) must interpret replacement values in that same ordering. The
+defined portions are:
 
   - Tunable: the tunable values/parameters, i.e. the values of the structure which are supposed to be considered
     non-constant when used in the context of an inverse problem solve. For example, this is the set of
@@ -62,18 +115,36 @@ function canonicalize end
 """
     replace(::AbstractPortion, p::T1, new_values) -> p::T1
 
-Equivalent to `canonicalize(::AbstractPortion, p::T1)[2](new_values)`, though allowed to
-optimize and not construct intermediates. For more information on the arguments, see
-canonicalize.
+Return a copy of `p` with one `portion` replaced by `new_values`.
+
+# Arguments
+
+  - `portion`: The portion to replace.
+  - `p`: A SciML structure value.
+  - `new_values`: Values in the ordering returned by `canonicalize(portion, p)`.
+
+# Interface
+
+This must be observationally equivalent to `canonicalize(portion, p)[2](new_values)`.
+Implementations may avoid intermediate canonical buffers.
 """
 function replace end
 
 """
     replace!(::AbstractPortion, p::T1, new_values)::Nothing
 
-Equivalent to `canonicalize(::AbstractPortion, p::T1)[2](new_values)`, though done in a mutating
-fashion and is allowed to optimize and not construct intermediates. Requires a mutable
-SciMLStructure. For more information on the arguments, see canonicalize.
+Replace one `portion` of `p` in place with `new_values`.
+
+# Arguments
+
+  - `portion`: The portion to replace.
+  - `p`: A mutable SciML structure value.
+  - `new_values`: Values in the ordering returned by `canonicalize(portion, p)`.
+
+# Interface
+
+Define this only when [`ismutablescimlstructure`](@ref) returns `true`. It must mutate
+`p`, return `nothing`, and produce the same resulting values as [`replace`](@ref).
 """
 function replace! end
 
