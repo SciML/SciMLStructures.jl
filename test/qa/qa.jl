@@ -4,11 +4,9 @@ using SciMLStructures: Tunable, Constants, Caches, Discrete, Initials, Input,
 
 run_qa(
     SciMLStructures;
-    explicit_imports = true,
     # JET is exercised below as targeted `@test_opt` type-stability checks, not
     # `JET.test_package`; `using JET` would otherwise auto-enable the latter.
     jet = false,
-    api_docs_kwargs = (; rendered = true),
 )
 
 @testset "JET static analysis" begin

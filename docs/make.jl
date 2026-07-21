@@ -16,7 +16,6 @@ makedocs(
     modules = [SciMLStructures],
     sitename = "SciMLStructures.jl",
     clean = true,
-    doctest = false,
     linkcheck = true,
     format = Documenter.HTML(
         assets = ["assets/favicon.ico"],

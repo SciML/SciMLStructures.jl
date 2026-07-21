@@ -108,7 +108,7 @@ function SS.replace!(::SS.Tunable, p::Parameters, newbuffer)
         subpar.p = val
     end
     copyto!(p.coeffs, view(newbuffer, (length(p.subparams) + 1):length(newbuffer)))
-    return p
+    return nothing
 end
 ```
 
@@ -147,7 +147,7 @@ function SS.replace!(::SS.Constants, p::Parameters, newbuffer)
         p.subparams[i].q = newbuffer[2i - 1]
         p.subparams[i].r = newbuffer[2i]
     end
-    return p
+    return nothing
 end
 
 buf, repack, alias = SS.canonicalize(SS.Constants(), p)
