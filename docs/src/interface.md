@@ -1,56 +1,62 @@
-# The SciMLStructure Interface
+# SciMLStructures Interface
 
-## Core Interface Definitions
+SciMLStructures provides a contract for non-state values that SciML solvers,
+optimization tools, and sensitivity analysis can inspect and replace generically. The
+full tutorial shows a concrete implementation in the [example](example.md).
 
-### `isscimlstructure` Definition
+## Opting In
 
-```julia
-isscimlstructure(p)::Bool
-ismutablescimlstructure(p)::Bool
-```
-
-Returns whether the object satisfies the SciMLStructure interface. Besides `AbstractArray{<:Number}`, the default is `false` and types
-are required to opt-into the interface.
-
-### `canonicalize` Definition
+Implement `isscimlstructure(::MyType) = true` to opt a container into the interface.
+For every supported portion tag, implement the public generic functions:
 
 ```julia
-canonicalize(::AbstractPortion, p::T1) -> values::T2, repack, aliases::Bool
-repack(new_values::T2) -> p::T1 # with values replaced with new_values
-replace(::AbstractPortion, p::T1, new_values) -> p::T1
-replace!(::AbstractPortion, p::T1, new_values)::Nothing # Requires mutable
+SciMLStructures.hasportion(::SciMLStructures.AbstractPortion, p)::Bool
+SciMLStructures.canonicalize(::SciMLStructures.AbstractPortion, p)
+SciMLStructures.replace(::SciMLStructures.AbstractPortion, p, new_values)
 ```
 
-### Portion Definitions
+`hasportion(portion, p)` determines whether the portion is present. When it is
+present, `canonicalize` returns `(values, repack, aliases)`, where `values` is an
+`AbstractVector`, `repack(new_values)` returns a new container with the values
+replaced, and `aliases` states whether mutation of `values` can mutate `p`.
+Multidimensional values must be flattened in a stable ordering. `replace` must use
+the same ordering and be observationally equivalent to `repack(new_values)`.
 
-The core function of the interface is the `canonicalize` function. `canonicalize` allows the user to define
-to the solver how to represent the given "portion" in a standard `AbstractVector` type which allows for
-interfacing with standard tools like linear algebra in an efficient manner. The type of portions which
-are defined are:
+When a portion is absent, `hasportion` returns `false` and `canonicalize` must return
+`(nothing, nothing, nothing)`. Do not report a portion as present without providing
+the corresponding `canonicalize` and `replace` methods.
 
-  - Tunable: the tunable values/parameters, i.e. the values of the structure which are supposed to be considered
-    non-constant when used in the context of an inverse problem solve. For example, this is the set of
-    parameters to be optimized during a parameter estimation of an ODE.
-    
-      + Tunable parameters are expected to return an `AbstractVector` of unitless values.
-      + Tunable parameters are expected to be constant during the solution of the ODE.
+For types that support in-place replacement, define
+`ismutablescimlstructure(::MyType) = true` and implement `replace!` for every
+present portion. `replace!` must mutate the original container, return `nothing`, and
+produce the same values as `replace`. Define the trait as `false` for an opted-in
+type that does not support in-place replacement. The trait is about this replacement
+contract, not Julia's `ismutabletype` property.
 
-  - Constants: the values which are to be considered constant by the solver, i.e. values which are not estimated
-    in an inverse problem and which are unchanged in any operation by the user as part of the solver's usage.
-  - Caches: the stored cache values of the struct, i.e. the values of the structure which are used as intermediates
-    within other computations in order to avoid extra allocations.
-  - Discrete: the discrete portions of the state captured inside of the structure. For example, discrete values
-    stored outside of the `u` in the parameters to be modified in the callbacks of an ODE.
+## Portion Tags
 
-      + Any parameter that is modified inside of callbacks should be considered Discrete.
+The built-in tags have fixed semantics:
 
-  - Input: the inputs portion of the SciMLStructure, representing external inputs to the system.
-  - Initials: the portion of the SciMLStructure used for parameters solely involved in initialization.
-    These should be floating point numbers supporting automatic differentiation.
+  - [`SciMLStructures.Tunable`](@ref): unitless values optimized or differentiated with respect to.
+    They must remain constant while a solver advances a solution.
+  - [`SciMLStructures.Constants`](@ref): values that are not estimated or changed by ordinary solver
+    operation.
+  - [`SciMLStructures.Caches`](@ref): mutable intermediate storage. Every model evaluation must write
+    every cache value it reads; cache contents cannot depend on an earlier evaluation.
+  - [`SciMLStructures.Discrete`](@ref): values outside the primary state that callbacks or discrete
+    events may modify during a solve.
+  - [`SciMLStructures.Input`](@ref): externally supplied system inputs.
+  - [`SciMLStructures.Initials`](@ref): automatic-differentiation-compatible floating-point values
+    used only while constructing or initializing a problem.
 
-## Definitions for Base Objects
+Prefer these tags when their semantics apply. Define a subtype of
+[`SciMLStructures.AbstractPortion`](@ref) only for a distinct, domain-level portion that downstream
+consumers explicitly understand, and apply the same `hasportion`, `canonicalize`,
+`replace`, and conditional `replace!` contract to it.
 
-  - `Vector`: returns an aliased version of itself as `Tunable`, and an empty vector matching type for `Constants`,
-    `Caches`, and `Discrete`.
-  - `Array`: returns the `vec(p)` aliased version of itself as `Tunable`, and an empty vector matching type for `Constants`,
-    `Caches`, and `Discrete`.
+## Built-In Arrays
+
+`AbstractArray{<:Number}` is an opted-in SciML structure. Its [`SciMLStructures.Tunable`](@ref)
+portion is `vec(p)` and aliases the original array; every other built-in portion is
+absent. `replace(Tunable(), p, values)` reconstructs an array compatible with `p`'s
+array type and shape.
