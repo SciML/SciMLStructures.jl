@@ -150,6 +150,7 @@ end
     end
 
     tunables, repack_tunables, aliases = canonicalize(Tunable(), p)
+    @test tunables isa AbstractVector
     @test tunables == [1.0, 2.0]
     @test !aliases
     rebuilt_tunables = repack_tunables([4.0, 5.0])
@@ -160,6 +161,7 @@ end
     @test replaced_tunables.constant == rebuilt_tunables.constant
 
     constants, repack_constants, aliases = canonicalize(Constants(), p)
+    @test constants isa AbstractVector
     @test constants == [3.0]
     @test !aliases
     rebuilt_constants = repack_constants([6.0])

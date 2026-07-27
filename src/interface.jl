@@ -13,6 +13,11 @@ The fallback returns `false`. A custom container opts in by defining
 `isscimlstructure(::MyType) = true`, then implementing the portion methods it supports.
 `AbstractArray{<:Number}` opts in through built-in methods.
 
+An opted-in type must define [`hasportion`](@ref) for every supported
+[`AbstractPortion`](@ref). For each present portion, it must also define
+[`canonicalize`](@ref) and [`replace`](@ref), and define [`replace!`](@ref) when
+[`ismutablescimlstructure`](@ref) is `true`.
+
 # Examples
 
 ```jldoctest
@@ -38,7 +43,8 @@ Return whether `p` supports in-place replacement for its implemented portions.
 Define `ismutablescimlstructure(::MyType) = true` only when
 [`replace!`](@ref) is implemented for every portion reported by [`hasportion`](@ref).
 This trait describes the SciMLStructures replacement contract, rather than merely
-whether the Julia type is mutable.
+whether the Julia type is mutable. Define it as `false` for opted-in types that do not
+support in-place replacement.
 """
 function ismutablescimlstructure end
 
@@ -151,61 +157,98 @@ function replace! end
 """
     AbstractPortion
 
-An abstract portion tag used in the SciMLStructures.jl interfaces, i.e.
-`canonicalize(::AbstractPortion, p::T1)` or `replace!(::AbstractPortion, p::T1)`.
+Abstract supertype for tags that identify independently handled portions of a
+SciML structure.
+
+# Interface
+
+Use the built-in portion tags whenever their semantics apply. A package may define a
+subtype only for a distinct, domain-level portion that consumers explicitly support.
+For a custom `P <: AbstractPortion`, a structure that supports `P()` must define
+[`hasportion`](@ref), [`canonicalize`](@ref), and [`replace`](@ref) for it, plus
+[`replace!`](@ref) when it reports [`ismutablescimlstructure`](@ref) as `true`.
+Absent portions must satisfy the `hasportion`/`canonicalize` absence rule.
 """
 abstract type AbstractPortion end
 
 """
     Tunable()
 
-The tunable portion of the SciMLStructure, i.e. the parameters which are meant to be optimized.
+Tag for the tunable portion of a SciML structure.
+
+# Interface
+
+This portion contains values optimized or differentiated with respect to by SciML
+estimation tools. [`canonicalize`](@ref) must return an `AbstractVector` of unitless
+values in a stable ordering. These values are expected to remain constant while a
+solver advances a solution.
 """
 struct Tunable <: AbstractPortion end
 
 """
     Constants()
 
-The constant portion of the SciMLStructure, i.e. the parameters which are meant to be
-constant with respect to optimization.
+Tag for the constant portion of a SciML structure.
+
+# Interface
+
+This portion contains values that are neither estimated nor modified as part of the
+solver's normal operation. It may contain values that are not suitable for the
+[`Tunable`](@ref) vector representation.
 """
 struct Constants <: AbstractPortion end
 
 """
     Caches()
 
-The caches portion of the SciMLStructure, i.e. the caches which are meant to allow for
-writing the model function without allocations.
+Tag for the cache portion of a SciML structure.
 
-Rules for caches:
+# Interface
 
-  - Caches should be a mutable object.
-  - Caches should not assume any previous value in them. All values within the cache should be
-    written into in the `f` call that they are used from.
+This portion contains mutable intermediate storage used to avoid allocations in model
+evaluation. A cache must not depend on a value written by an earlier model evaluation;
+each evaluation using a cache must initialize every value it reads.
 
-For making caches compatible with automatic differentiation, see
-[PreallocationTools.jl](https://docs.sciml.ai/PreallocationTools/stable/).
+Cache values should be mutable. For automatic-differentiation-compatible caches, use
+PreallocationTools.jl.
+
+See [PreallocationTools.jl](https://docs.sciml.ai/PreallocationTools/stable/).
 """
 struct Caches <: AbstractPortion end
 
 """
     Discrete()
 
-The discrete portion of the SciMLStructure.
+Tag for the discrete portion of a SciML structure.
+
+# Interface
+
+This portion contains values outside the primary state that callbacks or other discrete
+events may change during a solve. Any parameter mutated from a callback belongs here.
 """
 struct Discrete <: AbstractPortion end
 
 """
     Input()
 
-The inputs portion of the SciMLStructure.
+Tag for the external-input portion of a SciML structure.
+
+# Interface
+
+Use this portion for externally supplied inputs to the modeled system. It is distinct
+from [`Tunable`](@ref), [`Constants`](@ref), and solver-maintained [`Caches`](@ref).
 """
 struct Input <: AbstractPortion end
 
 """
     Initials()
 
-The portion of the SciMLStructure used for parameters solely involved in initialization.
-These should be floating point numbers supporting automatic differentiation.
+Tag for parameters used solely during initialization.
+
+# Interface
+
+This portion contains floating-point values that support automatic differentiation and
+are consumed only while constructing or initializing a problem, not while advancing
+its solution.
 """
 struct Initials <: AbstractPortion end
