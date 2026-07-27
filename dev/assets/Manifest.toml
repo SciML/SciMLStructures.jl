@@ -89,9 +89,9 @@ version = "1.1.2"
 
 [[deps.ArrayInterface]]
 deps = ["Adapt", "LinearAlgebra"]
-git-tree-sha1 = "1e96006a97ec601c6dfe5954d106f37efeb75408"
+git-tree-sha1 = "60f11b38ebeabd984f5535838d91e197d97202f0"
 uuid = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
-version = "7.28.0"
+version = "7.28.1"
 
     [deps.ArrayInterface.extensions]
     ArrayInterfaceAMDGPUExt = "AMDGPU"
@@ -444,9 +444,9 @@ version = "1.0.7"
 
 [[deps.Enzyme]]
 deps = ["CEnum", "EnzymeCore", "Enzyme_jll", "GPUCompiler", "InteractiveUtils", "LLVM", "Libdl", "LinearAlgebra", "ObjectFile", "PrecompileTools", "Preferences", "Printf", "Random", "SparseArrays"]
-git-tree-sha1 = "66e2c0270b97cb579615a67368813ccfa08751ed"
+git-tree-sha1 = "7c183722a3f4f7417a9c535b8430e2c8ab8788de"
 uuid = "7da242da-08ed-463a-9acd-ee780be4f1d9"
-version = "0.13.191"
+version = "0.13.195"
 
     [deps.Enzyme.extensions]
     EnzymeBFloat16sExt = "BFloat16s"
@@ -454,6 +454,7 @@ version = "0.13.191"
     EnzymeChainRulesCoreExt = "ChainRulesCore"
     EnzymeGPUArraysCoreExt = "GPUArraysCore"
     EnzymeLogExpFunctionsExt = "LogExpFunctions"
+    EnzymeOrderedCollectionsExt = "OrderedCollections"
     EnzymeSpecialFunctionsExt = "SpecialFunctions"
     EnzymeStaticArraysExt = "StaticArrays"
 
@@ -464,6 +465,7 @@ version = "0.13.191"
     ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
     GPUArraysCore = "46192b85-c4d5-4398-a991-12ede77f4527"
     LogExpFunctions = "2ab3a3ac-af41-5b50-aa03-7779005ae688"
+    OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
     SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
     StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
@@ -771,9 +773,9 @@ version = "0.10.8"
 
 [[deps.LLVM]]
 deps = ["CEnum", "LLVMExtra_jll", "Libdl", "PrecompileTools", "Preferences", "Printf", "Unicode"]
-git-tree-sha1 = "24af42ea221a14a04283e362d83d2cdcb115cd12"
+git-tree-sha1 = "39c054c8fd8cef1d405ba7e399d70710fdbae46c"
 uuid = "929cbde3-209d-540e-8aea-75f648917ca0"
-version = "9.10.1"
+version = "9.11.0"
 
     [deps.LLVM.extensions]
     BFloat16sExt = "BFloat16s"
@@ -783,9 +785,9 @@ version = "9.10.1"
 
 [[deps.LLVMExtra_jll]]
 deps = ["Artifacts", "JLLWrappers", "LazyArtifacts", "Libdl", "TOML"]
-git-tree-sha1 = "70c96f133c78c3cdc06234157144fab3744c6b38"
+git-tree-sha1 = "8886105e8ed2aa53062ae99870840a1e3622aaac"
 uuid = "dad2f222-ce93-54a1-a47d-0025e8a3acab"
-version = "0.0.43+1"
+version = "0.0.44+0"
 
 [[deps.LazilyInitializedFields]]
 git-tree-sha1 = "0f2da712350b020bc3957f269c9caad516383ee0"
@@ -845,9 +847,9 @@ version = "1.12.0"
 
 [[deps.LinearSolve]]
 deps = ["AMD", "ArrayInterface", "ConcreteStructs", "DocStringExtensions", "EnumX", "GPUArraysCore", "InteractiveUtils", "Krylov", "Libdl", "LinearAlgebra", "MKL_jll", "Markdown", "OpenBLAS_jll", "PrecompileTools", "Preferences", "PureKLU", "RecursiveArrayTools", "Reexport", "SciMLBase", "SciMLLogging", "SciMLOperators", "Setfield", "SparseArrays", "SparseColumnPivotedQR", "StaticArraysCore"]
-git-tree-sha1 = "5d35e7b3a093d3ce6924bda34e5a049a54492e35"
+git-tree-sha1 = "c8736a1afe6e913011a33b194c2dc2e9c4e335bd"
 uuid = "7ed4a6bd-45f5-4d41-b270-4a48e9bafcae"
-version = "5.1.0"
+version = "5.2.0"
 
     [deps.LinearSolve.extensions]
     LinearSolveAMDGPUExt = "AMDGPU"
@@ -1342,9 +1344,9 @@ version = "1.2.3"
 
 [[deps.RespecializeParams]]
 deps = ["FunctionWrappersWrappers"]
-git-tree-sha1 = "c5181af1dbc89cd14398a365e671b55d3507c088"
+git-tree-sha1 = "b0e50eb973aacb54dfb47e04be2cec6987401679"
 uuid = "9fe22ead-9e00-4db2-8b46-706a60d40f5e"
-version = "1.0.0"
+version = "1.1.0"
 
 [[deps.ReverseDiff]]
 deps = ["ChainRulesCore", "DiffResults", "DiffRules", "ForwardDiff", "FunctionWrappers", "LinearAlgebra", "LogExpFunctions", "MacroTools", "NaNMath", "Random", "SpecialFunctions", "StaticArrays", "Statistics"]
@@ -1398,9 +1400,9 @@ version = "0.7.0"
 
 [[deps.SciMLBase]]
 deps = ["ADTypes", "Accessors", "Adapt", "ArrayInterface", "CommonSolve", "ConstructionBase", "Distributed", "DocStringExtensions", "EnumX", "FindFirstFunctions", "FunctionWrappersWrappers", "IteratorInterfaceExtensions", "LinearAlgebra", "Logging", "Markdown", "PreallocationTools", "PrecompileTools", "Preferences", "Printf", "Random", "RecipesBase", "RecursiveArrayTools", "Reexport", "RuntimeGeneratedFunctions", "SciMLLogging", "SciMLOperators", "SciMLPublic", "SciMLStructures", "StaticArraysCore", "Statistics", "SymbolicIndexingInterface"]
-git-tree-sha1 = "1f700eb54e35b27a021943148780e0c13e1127b6"
+git-tree-sha1 = "32e737a78dae3baa8c469c35f1aba29fe058db35"
 uuid = "0bca4576-84f4-4d90-8ffe-ffa030f20462"
-version = "3.37.0"
+version = "3.39.1"
 
     [deps.SciMLBase.extensions]
     SciMLBaseChainRulesCoreExt = "ChainRulesCore"
@@ -1461,9 +1463,9 @@ weakdeps = ["Tracy"]
 
 [[deps.SciMLOperators]]
 deps = ["Accessors", "Adapt", "ArrayInterface", "DocStringExtensions", "LinearAlgebra"]
-git-tree-sha1 = "71878d6cb880919fcf64135083fbac0bc2ef0098"
+git-tree-sha1 = "10e4313d1bce847140611c12469ce532ffbdf3dd"
 uuid = "c0aeaf25-5076-4817-a8d5-81caf7dfa961"
-version = "1.24.4"
+version = "1.25.0"
 
     [deps.SciMLOperators.extensions]
     SciMLOperatorsLoopVectorizationExt = "LoopVectorization"
