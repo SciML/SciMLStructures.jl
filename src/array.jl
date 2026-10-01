@@ -14,8 +14,8 @@ function (f::ArrayRepack)(A)
         throw_array_repack_unsupported(typeof(f.x))
     end
     # Only 1-D offset vectors keep offset axes under `vec` and DimensionMismatch
-    # inside ArrayInterface.restructure. N-d OffsetArrays vec to a 1-based reshape
-    # and already round-trip on main — do not reject them here.
+    # inside ArrayInterface.restructure. N-d OffsetArrays `vec` to a 1-based
+    # reshape, so `restructure` handles them; only offset vectors need rejecting.
     if f.x isa AbstractVector && Base.has_offset_axes(f.x)
         throw_array_repack_unsupported(typeof(f.x))
     end
