@@ -3,6 +3,7 @@ using SciMLStructures: Tunable, Constants, Caches, Discrete, Initials, Input,
     canonicalize, hasportion, ismutablescimlstructure, isscimlstructure, replace, replace!
 using AllocCheck
 using LinearAlgebra
+using OffsetArrays
 using Test
 
 # AllocCheck has known false positives on macOS ARM with Julia 1.12+
@@ -177,21 +178,25 @@ end
     @test p.constant == 9.0
 end
 
-@testset "Eager canonicalize for unsupported AbstractArrays (#79)" begin
-    # Types that opt in via isscimlstructure but cannot round-trip through ArrayRepack
-    # must fail in canonicalize with the ArrayRepack error, not defer to repack.
+@testset "ArrayRepack clear error for non-1-based axes (#79)" begin
     unsupported_repack_msg = r"does not support the SciMLStructures interface via the AbstractArray `repack` rules"
 
+    # canonicalize stays lazy: value-only callers (e.g. SciMLBase.promote_u0) keep working.
     x = view([1.0, 2.0, 3.0, 4.0], 1:3)
     @test isscimlstructure(x)
-    @test_throws unsupported_repack_msg canonicalize(Tunable(), x)
+    xvals, xrepack, _ = canonicalize(Tunable(), x)
+    @test xvals == vec(x)
+
+    r = 1.0:3.0
+    @test isscimlstructure(r)
+    rvals, _, _ = canonicalize(Tunable(), r)
+    @test rvals == vec(r)
 
     D = Diagonal([1.0, 2.0, 3.0])
     @test isscimlstructure(D)
-    @test_throws unsupported_repack_msg canonicalize(Tunable(), D)
+    dvals, drepack, _ = canonicalize(Tunable(), D)
+    @test dvals == vec(D)
 
-    # Non-1-based axes with a trivial convert: ArrayInterface.restructure would
-    # fail later (OffsetArrays-style), so canonicalize must reject eagerly.
     struct ZeroBasedVector{T} <: AbstractVector{T}
         data::Vector{T}
     end
@@ -202,7 +207,22 @@ end
         ZeroBasedVector{T}(collect(T, v))
     zb = ZeroBasedVector{Float64}([1.0, 2.0, 3.0])
     @test isscimlstructure(zb)
-    @test_throws unsupported_repack_msg canonicalize(Tunable(), zb)
+    zbvals, zbrepack, _ = canonicalize(Tunable(), zb)
+    @test zbvals == vec(zb)
+
+    ov = OffsetVector([1.0, 2.0, 3.0], 0:2)
+    @test isscimlstructure(ov)
+    ovals, orepack, _ = canonicalize(Tunable(), ov)
+    @test ovals == vec(ov)
+
+    # Non-1-based targets: ArrayRepack used to DimensionMismatch inside restructure;
+    # now it throws the SciMLStructures unsupported-repack message.
+    @test_throws unsupported_repack_msg orepack([4.0, 5.0, 6.0])
+    @test_throws unsupported_repack_msg zbrepack([4.0, 5.0, 6.0])
+
+    # Types without a trivial Vector constructor still use the same message on repack.
+    @test_throws unsupported_repack_msg xrepack([1.0, 2.0, 3.0])
+    @test_throws unsupported_repack_msg drepack(ones(9))
 
     # Supported arrays still canonicalize and round-trip through repack.
     v = [1.0, 2.0, 3.0]
