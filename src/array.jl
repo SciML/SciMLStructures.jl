@@ -13,10 +13,11 @@ function (f::ArrayRepack)(A)
     if !has_trivial_array_constructor(typeof(f.x), A)
         throw_array_repack_unsupported(typeof(f.x))
     end
-    # ArrayInterface.restructure uses `vec(out) .= vec(A)`, which throws
-    # DimensionMismatch for non-1-based axes (OffsetArrays). Use our message instead.
-    for ax in axes(f.x)
-        first(ax) == 1 || throw_array_repack_unsupported(typeof(f.x))
+    # Only 1-D offset vectors keep offset axes under `vec` and DimensionMismatch
+    # inside ArrayInterface.restructure. N-d OffsetArrays vec to a 1-based reshape
+    # and already round-trip on main — do not reject them here.
+    if f.x isa AbstractVector && Base.has_offset_axes(f.x)
+        throw_array_repack_unsupported(typeof(f.x))
     end
     return restructure(f.x, A)
 end

@@ -215,10 +215,20 @@ end
     ovals, orepack, _ = canonicalize(Tunable(), ov)
     @test ovals == vec(ov)
 
-    # Non-1-based targets: ArrayRepack used to DimensionMismatch inside restructure;
-    # now it throws the SciMLStructures unsupported-repack message.
+    # Non-1-based 1-D targets: ArrayRepack used to DimensionMismatch inside
+    # restructure; now it throws the SciMLStructures unsupported-repack message.
     @test_throws unsupported_repack_msg orepack([4.0, 5.0, 6.0])
     @test_throws unsupported_repack_msg zbrepack([4.0, 5.0, 6.0])
+
+    # N-d OffsetArrays already round-trip on main (`vec` yields a 1-based reshape).
+    om = OffsetArray([1.0 2.0; 3.0 4.0], 0:1, 0:1)
+    @test isscimlstructure(om)
+    omvals, omrepack, _ = canonicalize(Tunable(), om)
+    @test omvals == vec(om)
+    om2 = omrepack([10.0, 20.0, 30.0, 40.0])
+    @test om2 isa typeof(om)
+    @test axes(om2) == axes(om)
+    @test vec(om2) == [10.0, 20.0, 30.0, 40.0]
 
     # Types without a trivial Vector constructor still use the same message on repack.
     @test_throws unsupported_repack_msg xrepack([1.0, 2.0, 3.0])
