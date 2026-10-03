@@ -1,5 +1,7 @@
 [deps]
 AllocCheck = "9b6a8646-10ed-4001-bbdc-1d2f46dfbb1a"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 SciMLStructures = "53ae85a6-f571-4167-b2af-e1d143709226"
 SciMLTesting = "09d9d899-5365-40a9-917a-5f67fddea283"
@@ -7,6 +9,8 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 AllocCheck = "0.1, 0.2"
+LinearAlgebra = "1.10"
+OffsetArrays = "1"
 SafeTestsets = "0.0.1, 0.1, 1"
 SciMLStructures = "1"
 SciMLTesting = "2.4"
