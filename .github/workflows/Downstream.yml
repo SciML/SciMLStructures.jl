@@ -15,6 +15,9 @@ on:
   schedule:
       - cron: '34 21 * * 4'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   test:
     name: ${{ matrix.package.repo }}/${{ matrix.package.group }}
